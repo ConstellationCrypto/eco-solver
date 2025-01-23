@@ -1,11 +1,11 @@
 export default {
   aws: [
     {
-      region: 'us-east-2',
+      region: 'us-west-2',
       secretID: 'eco-solver-secrets-dev',
     },
     {
-      region: 'us-east-2',
+      region: 'us-west-2',
       secretID: 'eco-solver-configs-dev',
     },
   ],
