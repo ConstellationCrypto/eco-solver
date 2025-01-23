@@ -5,7 +5,7 @@ import * as Redis from 'ioredis'
 import { Settings } from 'redlock'
 import { JobsOptions, RepeatOptions } from 'bullmq'
 import { Hex } from 'viem'
-import { LDOptions } from '@launchdarkly/node-server-sdk'
+//import { LDOptions } from '@launchdarkly/node-server-sdk'
 import { CacheModuleOptions } from '@nestjs/cache-manager'
 
 // The config type that we store in json
@@ -19,7 +19,7 @@ export type EcoConfigType = {
   intentConfigs: IntentConfig
   alchemy: AlchemyConfigType
   cache: CacheModuleOptions
-  launchDarkly: LaunchDarklyConfig
+  //launchDarkly: LaunchDarklyConfig
   eth: {
     privateKey: string
     simpleAccount: {
@@ -68,10 +68,10 @@ export type EcoConfigKeys = keyof EcoConfigType
 /**
  * The config type for the launch darkly feature flagging service
  */
-export type LaunchDarklyConfig = {
-  apiKey: string
-  options?: LDOptions
-}
+// export type LaunchDarklyConfig = {
+//   apiKey: string
+//   options?: LDOptions
+// }
 
 /**
  * The configs for the fulfillment params

@@ -24,6 +24,7 @@ import { IntervalModule } from '@/intervals/interval.module'
     BalanceModule,
     ChainMonitorModule,
     EcoConfigModule.withAWS(),
+    //EcoConfigModule.base(),
 
     FlagsModule,
     HealthModule,
