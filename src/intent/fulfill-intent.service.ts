@@ -27,7 +27,8 @@ import { ExecuteSmartWalletArg } from '../transaction/smart-wallets/smart-wallet
 import { KernelAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
 
-type FulfillmentMethod = ContractFunctionName<typeof InboxAbi>
+// TODO: Remove this once the updated routes-ts package is published
+type FulfillmentMethod = ContractFunctionName<typeof InboxAbi> | 'fulfillMetalayerInstant'
 
 /**
  * This class fulfills an intent by creating the transactions for the intent targets and the fulfill intent transaction.
@@ -212,8 +213,11 @@ export class FulfillIntentService {
   ): Promise<ExecuteSmartWalletArg> {
     const claimant = this.ecoConfigService.getEth().claimant
     const isHyperlane = this.proofService.isHyperlaneProver(model.intent.prover)
+    const isMetalayer = this.proofService.isMetalayerProver(model.intent.prover)
     const functionName: FulfillmentMethod = this.proofService.isStorageProver(model.intent.prover)
       ? 'fulfillStorage'
+      : isMetalayer
+      ? 'fulfillMetalayerInstant'
       : this.getFulfillment()
 
     const args = [
@@ -225,21 +229,30 @@ export class FulfillIntentService {
       claimant,
       model.intent.hash,
     ]
+
     if (isHyperlane) {
       args.push(model.intent.prover)
       if (functionName === 'fulfillHyperInstantWithRelayer') {
         args.push('0x0')
         args.push(zeroAddress)
       }
+    } else if (isMetalayer) {
+      args.push(model.intent.prover)
+      args.push([]) // Empty reads array for now - can be enhanced later if needed
     }
 
     let fee = 0n
     if (isHyperlane) {
       fee = BigInt((await this.getHyperlaneFee(solverAddress, model)) || '0x0')
     }
+    // TODO: Add Metalayer fee support once available
+    // if (isMetalayer) {
+    //   fee = await this.getMetalayerFee(solverAddress, model)
+    // }
 
     const fulfillIntentData = encodeFunctionData({
       abi: InboxAbi,
+      // @ts-expect-error temporary hack to amend the upstream types - can be removed once the updated routes-ts package is published
       functionName,
       // @ts-expect-error we dynamically set the args
       args,

@@ -436,8 +436,10 @@ describe('FulfillIntentService', () => {
     describe('on PROOF_STORAGE', () => {
       it('should use the correct function name and args', async () => {
         const mockStorage = jest.fn().mockReturnValue(true)
+        const mockMetalayer = jest.fn().mockReturnValue(false)
         const mockHyperlane = jest.fn().mockReturnValue(false)
         proofService.isStorageProver = mockStorage
+        proofService.isMetalayerProver = mockMetalayer
         proofService.isHyperlaneProver = mockHyperlane
         await fulfillIntentService['getFulfillIntentTx'](solver.solverAddress, model as any)
         expect(proofService.isStorageProver).toHaveBeenCalledTimes(1)
@@ -455,8 +457,10 @@ describe('FulfillIntentService', () => {
     describe('on PROOF_HYPERLANE', () => {
       it('should use the correct function name and args for fulfillHyperInstantWithRelayer', async () => {
         const mockStorage = jest.fn().mockReturnValue(false)
+        const mockMetalayer = jest.fn().mockReturnValue(false)
         const mockHyperlane = jest.fn().mockReturnValue(true)
         proofService.isStorageProver = mockStorage
+        proofService.isMetalayerProver = mockMetalayer
         proofService.isHyperlaneProver = mockHyperlane
         defaultArgs.push(model.intent.prover)
         defaultArgs.push('0x0')
@@ -476,8 +480,10 @@ describe('FulfillIntentService', () => {
 
       it('should use the correct function name and args for fulfillHyperBatched', async () => {
         const mockStorage = jest.fn().mockReturnValue(false)
+        const mockMetalayer = jest.fn().mockReturnValue(false)
         const mockHyperlane = jest.fn().mockReturnValue(true)
         proofService.isStorageProver = mockStorage
+        proofService.isMetalayerProver = mockMetalayer
         proofService.isHyperlaneProver = mockHyperlane
         fulfillIntentService['getFulfillment'] = jest.fn().mockReturnValue('fulfillHyperBatched')
         defaultArgs.push(model.intent.prover)
@@ -492,6 +498,44 @@ describe('FulfillIntentService', () => {
           functionName: 'fulfillHyperBatched',
           args: defaultArgs,
         })
+      })
+    })
+
+    describe('on PROOF_METALAYER', () => {
+      it('should use the correct function name and args for fulfillMetalayerInstant', async () => {
+        const mockStorage = jest.fn().mockReturnValue(false)
+        const mockHyperlane = jest.fn().mockReturnValue(false)
+        const mockMetalayer = jest.fn().mockReturnValue(true)
+        proofService.isStorageProver = mockStorage
+        proofService.isHyperlaneProver = mockHyperlane
+        proofService.isMetalayerProver = mockMetalayer
+        defaultArgs.push(model.intent.prover)
+        defaultArgs.push([]) // Empty reads array
+        await fulfillIntentService['getFulfillIntentTx'](solver.solverAddress, model as any)
+        expect(proofService.isStorageProver).toHaveBeenCalledTimes(1)
+        expect(proofService.isStorageProver).toHaveBeenCalledWith(model.intent.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.prover)
+        expect(proofService.isMetalayerProver).toHaveBeenCalledTimes(1)
+        expect(proofService.isMetalayerProver).toHaveBeenCalledWith(model.intent.prover)
+        expect(mockEncodeFunctionData).toHaveBeenCalledTimes(1)
+        expect(mockEncodeFunctionData).toHaveBeenCalledWith({
+          abi: InboxAbi,
+          functionName: 'fulfillMetalayerInstant',
+          args: defaultArgs,
+        })
+      })
+
+      it('should not include any fee for Metalayer proofs', async () => {
+        const mockStorage = jest.fn().mockReturnValue(false)
+        const mockHyperlane = jest.fn().mockReturnValue(false)
+        const mockMetalayer = jest.fn().mockReturnValue(true)
+        proofService.isStorageProver = mockStorage
+        proofService.isHyperlaneProver = mockHyperlane
+        proofService.isMetalayerProver = mockMetalayer
+
+        const result = await fulfillIntentService['getFulfillIntentTx'](solver.solverAddress, model as any)
+        expect(result.value).toBe(0n)
       })
     })
   })
