@@ -5,6 +5,7 @@ import { Hex } from 'viem'
 import {
   PROOF_HYPERLANE,
   PROOF_STORAGE,
+  PROOF_METALAYER,
   ProofCall,
   ProofType,
   ProverInterfaceAbi,
@@ -61,6 +62,15 @@ export class ProofService implements OnModuleInit {
    */
   isStorageProver(proverAddress: Hex): boolean {
     return this.getProofType(proverAddress) === PROOF_STORAGE
+  }
+
+  /**
+   * Checks if the prover is a metalayer prover
+   * @param proverAddress the prover address
+   * @returns
+   */
+  isMetalayerProver(proverAddress: Hex): boolean {
+    return this.getProofType(proverAddress) === PROOF_METALAYER
   }
 
   /**
@@ -176,6 +186,8 @@ export class ProofService implements OnModuleInit {
     switch (prover) {
       case PROOF_HYPERLANE:
         return proofs.hyperlane_duration_seconds
+      case PROOF_METALAYER:
+        return proofs.metalayer_duration_seconds
       case PROOF_STORAGE:
       default:
         return proofs.storage_duration_seconds

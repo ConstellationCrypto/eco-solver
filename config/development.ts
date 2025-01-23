@@ -92,4 +92,11 @@ export default {
       chainID: 11155420,
     },
   },
+  intentConfigs: {
+    proofs: {
+      storage_duration_seconds: 60,
+      hyperlane_duration_seconds: 120,
+      metalayer_duration_seconds: 180,
+    },
+  },
 }
