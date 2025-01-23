@@ -12,7 +12,7 @@ import { Hex } from 'viem'
 import { ValidSmartWalletService } from '../solver/filters/valid-smart-wallet.service'
 import { decodeCreateIntentLog, IntentCreatedLog } from '../contracts'
 import { IntentSourceDataModel } from './schemas/intent-source-data.schema'
-import { FlagService } from '../flags/flags.service'
+//import { FlagService } from '../flags/flags.service'
 
 /**
  * This service is responsible for creating a new intent record in the database. It is
@@ -28,7 +28,7 @@ export class CreateIntentService implements OnModuleInit {
     @InjectQueue(QUEUES.SOURCE_INTENT.queue) private readonly intentQueue: Queue,
     @InjectModel(IntentSourceModel.name) private intentModel: Model<IntentSourceModel>,
     private readonly validSmartWalletService: ValidSmartWalletService,
-    private readonly flagService: FlagService,
+    //private readonly flagService: FlagService,
     private readonly ecoConfigService: EcoConfigService,
   ) {}
 
@@ -76,7 +76,7 @@ export class CreateIntentService implements OnModuleInit {
         return
       }
 
-      const validWallet = this.flagService.getFlagValue('bendWalletOnly')
+      const validWallet = false //this.flagService.getFlagValue('bendWalletOnly')
         ? await this.validSmartWalletService.validateSmartWallet(
             intent.creator as Hex,
             intentWs.sourceChainID,
