@@ -30,7 +30,7 @@ export default {
   },
   intentSources: [
     {
-      network: 'curtis',
+      network: 'Curtis',
       chainID: 33111,
       tokens: [
         '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78', //usdc
@@ -39,7 +39,7 @@ export default {
       provers: ['0x436E7056A47AD2F1e2C788a26e6b8350AA4B7302'],
     },
     {
-      network: 'mantasepolia',
+      network: 'manta-sepolia',
       chainID: 3441006,
       tokens: [
         '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c', //usdc
@@ -62,7 +62,7 @@ export default {
           minBalance: 1000,
         },
       },
-      network: 'curtis',
+      network: 'Curtis',
       chainID: 33111,
     },
     3441006: {
@@ -78,7 +78,7 @@ export default {
           minBalance: 1000,
         },
       },
-      network: 'mantasepolia',
+      network: 'manta-sepolia',
       chainID: 3441006,
     },
   },
