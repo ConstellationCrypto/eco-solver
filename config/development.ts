@@ -30,66 +30,56 @@ export default {
   },
   intentSources: [
     {
-      network: 'opt-sepolia',
-      chainID: 11155420,
+      network: 'curtis',
+      chainID: 33111,
       tokens: [
-        '0x5fd84259d66Cd46123540766Be93DFE6D43130D7', //usdc
-        '0x8327Db9040811545C13331A453aBe9C7AA1aCDf8',
-        '0x368d7C52B0F62228907C133204605a5B11A1dB6d',
-        '0x00D2d1162c689179e8bA7a3b936f80A010A0b5CF',
-        '0x3328C29843F7c7dfF7381aF54A03C7423431Eaa4',
-        '0xd3F4Bef596a04e2be4fbeB17Dd70f02F717c5a6c',
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a',
+        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78', //usdc
+        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77', //usdt
       ],
-      provers: ['0x9592E6bA1Cec5d85D0EeF477703814857acFa921'],
+      provers: ['0x436E7056A47AD2F1e2C788a26e6b8350AA4B7302'],
     },
     {
-      network: 'base-sepolia',
-      chainID: 84532,
+      network: 'mantasepolia',
+      chainID: 3441006,
       tokens: [
-        '0xAb1D243b07e99C91dE9E4B80DFc2B07a8332A2f7', //usdc
-        '0x8bDa9F5C33FBCB04Ea176ea5Bc1f5102e934257f',
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a',
+        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c', //usdc
+        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F', //usdt
       ],
-      provers: ['0x9592E6bA1Cec5d85D0EeF477703814857acFa921'],
+      provers: ['0xac3f4357d650109a94c4a977f6c327b140cbac37'],
     },
   ],
   solvers: {
-    //base sepolia
-    84532: {
+    33111: {
       targets: {
-        //base sepolia USDC
-        '0xAb1D243b07e99C91dE9E4B80DFc2B07a8332A2f7': {
+        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
         },
-        '0x8bDa9F5C33FBCB04Ea176ea5Bc1f5102e934257f': {
-          contractType: 'erc20',
-          selectors: ['transfer(address,uint256)'],
-          minBalance: 1000,
-        },
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a': {
+        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
         },
       },
-      network: 'base-sepolia',
-      chainID: 84532,
+      network: 'curtis',
+      chainID: 33111,
     },
-    //op sepolia
-    11155420: {
+    3441006: {
       targets: {
-        //op sepolia USDC
-        '0x5fd84259d66Cd46123540766Be93DFE6D43130D7': {
+        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+        },
+        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
         },
       },
-      network: 'opt-sepolia',
-      chainID: 11155420,
+      network: 'mantasepolia',
+      chainID: 3441006,
     },
   },
 }
