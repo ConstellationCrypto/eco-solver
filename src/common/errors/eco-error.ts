@@ -39,10 +39,6 @@ export class EcoError extends Error {
     return new EcoError(`The simple account config is invalid`)
   }
 
-  static InvalidKernelAccountConfig() {
-    return new EcoError(`The kernel account config is invalid`)
-  }
-
   static FeasableIntentNoTransactionError = new Error('No transaction data found')
   static FulfillIntentNoTransactionError = new Error('No transaction data found')
   static FulfillIntentBatchError = new Error('Could not fulfill batch transaction')

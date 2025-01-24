@@ -8,11 +8,11 @@ import * as LiFi from '@lifi/sdk'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
 import { LiquidityManagerQueue } from '@/liquidity-manager/queues/liquidity-manager.queue'
 import { LiFiProviderService } from '@/liquidity-manager/services/liquidity-providers/LiFi/lifi-provider.service'
-import { KernelAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
+import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
 
 describe('LiFiProviderService', () => {
   let lifiProviderService: LiFiProviderService
-  let kernelAccountClientService: KernelAccountClientV2Service
+  let simpleAccountClientService: SimpleAccountClientV2Service
   let ecoConfigService: DeepMocked<EcoConfigService>
   let queue: DeepMocked<Queue>
   let flowProducer: DeepMocked<FlowProducer>
@@ -23,8 +23,8 @@ describe('LiFiProviderService', () => {
         LiFiProviderService,
         { provide: EcoConfigService, useValue: createMock<EcoConfigService>() },
         {
-          provide: KernelAccountClientV2Service,
-          useValue: createMock<KernelAccountClientV2Service>(),
+          provide: SimpleAccountClientV2Service,
+          useValue: createMock<SimpleAccountClientV2Service>(),
         },
       ],
       imports: [
@@ -40,7 +40,7 @@ describe('LiFiProviderService', () => {
 
     ecoConfigService = chainMod.get(EcoConfigService)
     lifiProviderService = chainMod.get(LiFiProviderService)
-    kernelAccountClientService = chainMod.get(KernelAccountClientV2Service)
+    simpleAccountClientService = chainMod.get(SimpleAccountClientV2Service)
 
     queue = chainMod.get(getQueueToken(LiquidityManagerQueue.queueName))
     flowProducer = chainMod.get(getFlowProducerToken(LiquidityManagerQueue.flowName))
@@ -52,7 +52,7 @@ describe('LiFiProviderService', () => {
 
   describe('OnModuleInit', () => {
     it('should configure LiFi SDK on init', async () => {
-      const mockGetClient = jest.spyOn(kernelAccountClientService, 'getClient')
+      const mockGetClient = jest.spyOn(simpleAccountClientService, 'getClient')
       mockGetClient.mockReturnValue({ account: { address: '0x123' } } as any)
 
       jest.spyOn(ecoConfigService, 'getIntentSources').mockReturnValue([{ chainID: 10 }] as any)

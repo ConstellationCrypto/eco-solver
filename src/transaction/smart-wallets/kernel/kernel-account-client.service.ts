@@ -4,21 +4,21 @@ import { entryPoint07Address } from 'viem/account-abstraction'
 import { EcoConfigService } from '../../../eco-configs/eco-config.service'
 import { SignerService } from '../../../sign/signer.service'
 import { Chain, Hex, zeroAddress } from 'viem'
-import { KernelAccountClientConfig } from './kernel-account.config'
+import { SimpleAccountClientConfig } from './kernel-account.config'
 import { KernelVersion } from 'permissionless/accounts'
-import { createKernelAccountClient, entryPointV_0_7 } from './create.kernel.account'
-import { KernelAccountClient } from './kernel-account.client'
+import { createSimpleAccountClient, entryPointV_0_7 } from './create.kernel.account'
+import { SimpleAccountClient } from './kernel-account.client'
 import { EcoLogMessage } from '../../../common/logging/eco-log-message'
 
 @Injectable()
-export class KernelAccountClientServiceBase<
+export class SimpleAccountClientServiceBase<
   entryPointVersion extends '0.6' | '0.7',
   kernelVersion extends KernelVersion<entryPointVersion>,
 > extends ViemMultichainClientService<
-  KernelAccountClient<entryPointVersion>,
-  KernelAccountClientConfig<entryPointVersion, kernelVersion>
+  SimpleAccountClient<entryPointVersion>,
+  SimpleAccountClientConfig<entryPointVersion, kernelVersion>
 > {
-  private logger = new Logger(KernelAccountClientServiceBase.name)
+  private logger = new Logger(SimpleAccountClientServiceBase.name)
 
   constructor(
     readonly ecoConfigService: EcoConfigService,
@@ -28,16 +28,16 @@ export class KernelAccountClientServiceBase<
   }
 
   protected override async createInstanceClient(
-    configs: KernelAccountClientConfig<entryPointVersion, kernelVersion>,
-  ): Promise<KernelAccountClient<entryPointVersion>> {
-    const { client, args } = await createKernelAccountClient(configs)
+    configs: SimpleAccountClientConfig<entryPointVersion, kernelVersion>,
+  ): Promise<SimpleAccountClient<entryPointVersion>> {
+    const { client, args } = await createSimpleAccountClient(configs)
     if (args && args.deployReceipt) {
       this.logger.debug(
         EcoLogMessage.fromDefault({
           message: `Deploying Kernel Account`,
           properties: {
             ...args,
-            kernelAccount: client.kernelAccount.address,
+            simpleAccount: client.simpleAccount.address,
           },
         }),
       )
@@ -47,7 +47,7 @@ export class KernelAccountClientServiceBase<
 
   protected override async buildChainConfig(
     chain: Chain,
-  ): Promise<KernelAccountClientConfig<entryPointVersion, kernelVersion>> {
+  ): Promise<SimpleAccountClientConfig<entryPointVersion, kernelVersion>> {
     const base = await super.buildChainConfig(chain)
     return {
       ...base,
@@ -71,12 +71,12 @@ export class KernelAccountClientServiceBase<
     }
 
     const clientKernel = await this.getClient(Object.values(solvers)[0].chainID)
-    return clientKernel.kernelAccount?.address
+    return clientKernel.simpleAccount?.address
   }
 }
 
 @Injectable()
-export class KernelAccountClientService extends KernelAccountClientServiceBase<
+export class SimpleAccountClientService extends SimpleAccountClientServiceBase<
   entryPointV_0_7,
   KernelVersion<entryPointV_0_7>
 > {

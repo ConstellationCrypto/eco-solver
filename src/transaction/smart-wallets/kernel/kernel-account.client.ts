@@ -21,7 +21,7 @@ export type DeployFactoryArgs = {
   chainID?: number
 }
 
-export type KernelAccountClient<
+export type SimpleAccountClient<
   entryPointVersion extends '0.6' | '0.7',
   transport extends Transport = Transport,
   chain extends Chain | undefined = Chain | undefined,
@@ -34,20 +34,20 @@ export type KernelAccountClient<
     account,
     rpcSchema extends RpcSchema ? [...WalletRpcSchema, ...rpcSchema] : WalletRpcSchema
   > & {
-    kernelAccount: ToEcdsaKernelSmartAccountReturnType<entryPointVersion>
-    kernelAccountAddress: Hex
+    simpleAccount: ToEcdsaKernelSmartAccountReturnType<entryPointVersion>
+    simpleAccountAddress: Hex
   }
 >
 
-export function KernelAccountActions<
+export function SimpleAccountActions<
   entryPointVersion extends '0.6' | '0.7',
   transport extends Transport,
   chain extends Chain | undefined = Chain | undefined,
   account extends Account | undefined = Account | undefined,
->(client: KernelAccountClient<entryPointVersion, transport, chain, account>): KernelWalletActions {
+>(client: SimpleAccountClient<entryPointVersion, transport, chain, account>): KernelWalletActions {
   return {
     execute: (args) => execute(client, args),
-    deployKernelAccount: () => deployKernelAccount(client),
+    deploySimpleAccount: () => deploySimpleAccount(client),
   }
 }
 
@@ -56,28 +56,28 @@ async function execute<
   chain extends Chain | undefined,
   account extends Account | undefined,
 >(
-  client: KernelAccountClient<entryPointVersion, Transport, chain, account>,
+  client: SimpleAccountClient<entryPointVersion, Transport, chain, account>,
   transactions: ExecuteSmartWalletArgs,
 ): Promise<Hex> {
   const calls = transactions.map((tx) => ({ to: tx.to, data: tx.data, value: tx.value }))
-  const kernelVersion = client.kernelAccount.entryPoint.version == '0.6' ? '0.2.4' : '0.3.1'
+  const kernelVersion = client.simpleAccount.entryPoint.version == '0.6' ? '0.2.4' : '0.3.1'
   const data = encodeKernelExecuteCallData({ calls, kernelVersion })
   return client.sendTransaction({
     data: data,
     kzg: undefined,
-    to: client.kernelAccount.address,
+    to: client.simpleAccount.address,
     chain: client.chain as Chain,
     account: client.account as Account,
   })
 }
 
-async function deployKernelAccount<
+async function deploySimpleAccount<
   entryPointVersion extends '0.6' | '0.7',
   transport extends Transport,
   chain extends Chain | undefined = Chain | undefined,
   account extends Account | undefined = Account | undefined,
 >(
-  client: KernelAccountClient<entryPointVersion, transport, chain, account>,
+  client: SimpleAccountClient<entryPointVersion, transport, chain, account>,
 ): Promise<DeployFactoryArgs> {
   const args: DeployFactoryArgs = {}
 
@@ -85,10 +85,10 @@ async function deployKernelAccount<
     chain: client.chain,
     transport: http(),
   })
-  const code = await publicClient.getCode({ address: client.kernelAccount.address })
+  const code = await publicClient.getCode({ address: client.simpleAccount.address })
 
   if (!code) {
-    const fa = await client.kernelAccount.getFactoryArgs()
+    const fa = await client.simpleAccount.getFactoryArgs()
     args.factory = fa.factory
     args.factoryData = fa.factoryData
     args.chainID = client.chain?.id

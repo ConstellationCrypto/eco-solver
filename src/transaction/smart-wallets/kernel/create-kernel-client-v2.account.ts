@@ -24,7 +24,7 @@ import { encodeKernelExecuteCallData } from '@/transaction/smart-wallets/kernel/
 import { entryPointV_0_7 } from '@/transaction/smart-wallets/kernel/create.kernel.account'
 import { sendTransaction } from 'viem/actions'
 
-export type KernelAccountClientV2Config<
+export type SimpleAccountClientV2Config<
   entryPointVersion extends '0.6' | '0.7',
   kernelVersion extends KernelVersion<entryPointVersion>,
   transport extends Transport = Transport,
@@ -40,7 +40,7 @@ export type KernelAccountClientV2Config<
     }
 >
 
-export type KernelAccountClientV2<
+export type SimpleAccountClientV2<
   entryPointVersion extends '0.6' | '0.7',
   transport extends Transport = Transport,
   chain extends Chain | undefined = Chain | undefined,
@@ -55,14 +55,14 @@ export type KernelAccountClientV2<
   }
 >
 
-export async function createKernelAccountClientV2<
+export async function createSimpleAccountClientV2<
   entryPointVersion extends '0.6' | '0.7' = entryPointV_0_7,
 >(
-  _parameters: KernelAccountClientV2Config<entryPointVersion, KernelVersion<entryPointVersion>>,
-): Promise<KernelAccountClientV2<entryPointVersion>> {
+  _parameters: SimpleAccountClientV2Config<entryPointVersion, KernelVersion<entryPointVersion>>,
+): Promise<SimpleAccountClientV2<entryPointVersion>> {
   const { ownerAccount, ...parameters } = _parameters
 
-  const { key = 'kernelAccountClientV2', name = 'Kernel Account Client V2', transport } = parameters
+  const { key = 'simpleAccountClientV2', name = 'Kernel Account Client V2', transport } = parameters
   const { account } = parameters
 
   const walletClient = createWalletClient({
@@ -73,7 +73,7 @@ export async function createKernelAccountClientV2<
     transport,
   })
 
-  const kernelAccount = await toEcdsaKernelSmartAccount<
+  const simpleAccount = await toEcdsaKernelSmartAccount<
     entryPointVersion,
     KernelVersion<entryPointVersion>
   >({
@@ -84,23 +84,23 @@ export async function createKernelAccountClientV2<
   const client = Object.assign(
     createClient({
       ...parameters,
-      account: kernelAccount,
+      account: simpleAccount,
       chain: parameters.chain ?? walletClient?.chain,
     }),
     { ownerAccount },
   )
 
-  return client.extend(kernelAccountV2Actions) as KernelAccountClientV2<entryPointVersion>
+  return client.extend(simpleAccountV2Actions) as SimpleAccountClientV2<entryPointVersion>
 }
 
-function kernelAccountV2Actions<
+function simpleAccountV2Actions<
   entryPointVersion extends '0.6' | '0.7',
   TChain extends Chain | undefined = Chain | undefined,
   account extends ToEcdsaKernelSmartAccountReturnType<entryPointVersion> | undefined =
     | ToEcdsaKernelSmartAccountReturnType<entryPointVersion>
     | undefined,
 >(
-  client: KernelAccountClientV2<entryPointVersion, Transport, TChain, account>,
+  client: SimpleAccountClientV2<entryPointVersion, Transport, TChain, account>,
 ): Pick<SmartAccountActions<TChain, account>, 'sendTransaction'> {
   return {
     sendTransaction: (args) => sendTransactionWithSWC(client, args as any),
@@ -123,7 +123,7 @@ async function sendTransactionWithSWC<
     chainOverride
   >,
 >(
-  client: KernelAccountClientV2<entryPointVersion, Transport, chain, account>,
+  client: SimpleAccountClientV2<entryPointVersion, Transport, chain, account>,
   args:
     | SendTransactionParameters<chain, account, chainOverride>
     | SendUserOperationParameters<account, accountOverride, calls>,

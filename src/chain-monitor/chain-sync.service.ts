@@ -9,7 +9,7 @@ import { IntentCreatedLog } from '../contracts'
 import { entries } from 'lodash'
 import { BlockTag } from 'viem'
 import { WatchCreateIntentService } from '../watch/intent/watch-create-intent.service'
-import { KernelAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { IntentSourceAbi } from '@eco-foundation/routes-ts'
 
 /**
@@ -24,7 +24,7 @@ export class ChainSyncService implements OnApplicationBootstrap {
 
   constructor(
     @InjectModel(IntentSourceModel.name) private intentModel: Model<IntentSourceModel>,
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
     private readonly watchIntentService: WatchCreateIntentService,
     private ecoConfigService: EcoConfigService,
   ) {}
@@ -73,7 +73,7 @@ export class ChainSyncService implements OnApplicationBootstrap {
    * @returns
    */
   async getMissingTxs(source: IntentSource): Promise<IntentCreatedLog[]> {
-    const client = await this.kernelAccountClientService.getClient(source.chainID)
+    const client = await this.simpleAccountClientService.getClient(source.chainID)
     const solverSupportedChains = entries(this.ecoConfigService.getSolvers()).map(([chainID]) =>
       BigInt(chainID),
     )

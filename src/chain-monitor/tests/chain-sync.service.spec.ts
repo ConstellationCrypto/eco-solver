@@ -8,12 +8,12 @@ import { IntentSourceModel } from '../../intent/schemas/intent-source.schema'
 import { Model } from 'mongoose'
 import { Solver, IntentSource } from '../../eco-configs/eco-config.types'
 import { entries } from 'lodash'
-import { KernelAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { IntentSourceAbi } from '@eco-foundation/routes-ts'
 
 describe('ChainSyncService', () => {
   let chainSyncService: ChainSyncService
-  let accountService: DeepMocked<KernelAccountClientService>
+  let accountService: DeepMocked<SimpleAccountClientService>
   let watchIntentService: DeepMocked<WatchCreateIntentService>
   let ecoConfigService: DeepMocked<EcoConfigService>
 
@@ -22,8 +22,8 @@ describe('ChainSyncService', () => {
       providers: [
         ChainSyncService,
         {
-          provide: KernelAccountClientService,
-          useValue: createMock<KernelAccountClientService>(),
+          provide: SimpleAccountClientService,
+          useValue: createMock<SimpleAccountClientService>(),
         },
         { provide: WatchCreateIntentService, useValue: createMock<WatchCreateIntentService>() },
         { provide: EcoConfigService, useValue: createMock<EcoConfigService>() },
@@ -35,7 +35,7 @@ describe('ChainSyncService', () => {
     }).compile()
 
     chainSyncService = chainMod.get(ChainSyncService)
-    accountService = chainMod.get(KernelAccountClientService)
+    accountService = chainMod.get(SimpleAccountClientService)
     watchIntentService = chainMod.get(WatchCreateIntentService)
     ecoConfigService = chainMod.get(EcoConfigService) as DeepMocked<EcoConfigService>
   })

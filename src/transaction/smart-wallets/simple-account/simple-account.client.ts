@@ -38,7 +38,7 @@ export function SimpleAccountActions<
   account extends Account | undefined = Account | undefined,
 >(
   client: SimpleAccountClient<transport, chain, account>,
-): Omit<SmartWalletActions, 'deployKernelAccount'> {
+): Omit<SmartWalletActions, 'deploySimpleAccount'> {
   return {
     execute: (args) => execute(client, args),
   }

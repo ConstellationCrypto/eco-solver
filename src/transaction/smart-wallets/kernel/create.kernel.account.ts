@@ -9,22 +9,22 @@ import {
   publicActions,
   zeroAddress,
 } from 'viem'
-import { KernelAccountClientConfig } from './kernel-account.config'
+import { SimpleAccountClientConfig } from './kernel-account.config'
 import {
   DeployFactoryArgs,
-  KernelAccountActions,
-  KernelAccountClient,
+  SimpleAccountActions,
+  SimpleAccountClient,
 } from './kernel-account.client'
 import { KernelVersion, toEcdsaKernelSmartAccount } from 'permissionless/accounts'
 
 export type entryPointV_0_7 = '0.7'
 
-export async function createKernelAccountClient<
+export async function createSimpleAccountClient<
   entryPointVersion extends '0.6' | '0.7' = entryPointV_0_7,
 >(
-  parameters: KernelAccountClientConfig<entryPointVersion, KernelVersion<entryPointVersion>>,
-): Promise<{ client: KernelAccountClient<entryPointVersion>; args: DeployFactoryArgs }> {
-  const { key = 'kernelAccountClient', name = 'Kernel Account Client', transport } = parameters
+  parameters: SimpleAccountClientConfig<entryPointVersion, KernelVersion<entryPointVersion>>,
+): Promise<{ client: SimpleAccountClient<entryPointVersion>; args: DeployFactoryArgs }> {
+  const { key = 'simpleAccountClient', name = 'Kernel Account Client', transport } = parameters
   const { account } = parameters
 
   let client = createWalletClient({
@@ -33,9 +33,9 @@ export async function createKernelAccountClient<
     key,
     name,
     transport,
-  }) as KernelAccountClient<entryPointVersion>
+  }) as SimpleAccountClient<entryPointVersion>
 
-  const kernelAccount = await toEcdsaKernelSmartAccount<
+  const simpleAccount = await toEcdsaKernelSmartAccount<
     entryPointVersion,
     KernelVersion<entryPointVersion>
   >({
@@ -43,8 +43,8 @@ export async function createKernelAccountClient<
     client,
   })
 
-  if (kernelAccount.address === zeroAddress) {
-    const { factoryData: factoryStakerData } = await kernelAccount.getFactoryArgs()
+  if (simpleAccount.address === zeroAddress) {
+    const { factoryData: factoryStakerData } = await simpleAccount.getFactoryArgs()
 
     if (factoryStakerData) {
       const { args } = decodeFunctionData({
@@ -79,15 +79,15 @@ export async function createKernelAccountClient<
         data: data!,
       })
 
-      kernelAccount.address = address as Hex
+      simpleAccount.address = address as Hex
     }
   }
 
-  client.kernelAccount = kernelAccount
-  client.kernelAccountAddress = kernelAccount.address
-  client = client.extend(KernelAccountActions).extend(publicActions) as any
+  client.simpleAccount = simpleAccount
+  client.simpleAccountAddress = simpleAccount.address
+  client = client.extend(SimpleAccountActions).extend(publicActions) as any
 
   //conditionally deploys kernel account if it doesn't exist
-  const args = await client.deployKernelAccount()
+  const args = await client.deploySimpleAccount()
   return { client, args }
 }

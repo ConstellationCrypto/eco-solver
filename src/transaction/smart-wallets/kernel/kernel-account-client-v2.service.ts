@@ -7,19 +7,19 @@ import { Chain, Hex, zeroAddress } from 'viem'
 import { KernelVersion } from 'permissionless/accounts'
 import { entryPointV_0_7 } from './create.kernel.account'
 import {
-  createKernelAccountClientV2,
-  KernelAccountClientV2,
-  KernelAccountClientV2Config,
+  createSimpleAccountClientV2,
+  SimpleAccountClientV2,
+  SimpleAccountClientV2Config,
 } from '@/transaction/smart-wallets/kernel/create-kernel-client-v2.account'
 
-class KernelAccountClientV2ServiceBase<
+class SimpleAccountClientV2ServiceBase<
   entryPointVersion extends '0.6' | '0.7',
   kernelVersion extends KernelVersion<entryPointVersion>,
 > extends ViemMultichainClientService<
-  KernelAccountClientV2<entryPointVersion>,
-  KernelAccountClientV2Config<entryPointVersion, kernelVersion>
+  SimpleAccountClientV2<entryPointVersion>,
+  SimpleAccountClientV2Config<entryPointVersion, kernelVersion>
 > {
-  private logger = new Logger(KernelAccountClientV2ServiceBase.name)
+  private logger = new Logger(SimpleAccountClientV2ServiceBase.name)
 
   constructor(
     readonly ecoConfigService: EcoConfigService,
@@ -43,14 +43,14 @@ class KernelAccountClientV2ServiceBase<
   }
 
   protected override async createInstanceClient(
-    configs: KernelAccountClientV2Config<entryPointVersion, kernelVersion>,
-  ): Promise<KernelAccountClientV2<entryPointVersion>> {
-    return createKernelAccountClientV2(configs)
+    configs: SimpleAccountClientV2Config<entryPointVersion, kernelVersion>,
+  ): Promise<SimpleAccountClientV2<entryPointVersion>> {
+    return createSimpleAccountClientV2(configs)
   }
 
   protected override async buildChainConfig(
     chain: Chain,
-  ): Promise<KernelAccountClientV2Config<entryPointVersion, kernelVersion>> {
+  ): Promise<SimpleAccountClientV2Config<entryPointVersion, kernelVersion>> {
     const base = await super.buildChainConfig(chain)
     return {
       ...base,
@@ -66,7 +66,7 @@ class KernelAccountClientV2ServiceBase<
 }
 
 @Injectable()
-export class KernelAccountClientV2Service extends KernelAccountClientV2ServiceBase<
+export class SimpleAccountClientV2Service extends SimpleAccountClientV2ServiceBase<
   entryPointV_0_7,
   KernelVersion<entryPointV_0_7>
 > {

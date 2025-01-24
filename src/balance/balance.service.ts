@@ -6,7 +6,7 @@ import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import { erc20Abi, Hex, MulticallParameters, MulticallReturnType } from 'viem'
 import { ViemEventLog } from '@/common/events/viem'
 import { decodeTransferLog, isSupportedTokenType } from '@/contracts'
-import { KernelAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
 import { TokenBalance, TokenConfig } from '@/balance/types'
 import { EcoError } from '@/common/errors/eco-error'
 
@@ -21,7 +21,7 @@ export class BalanceService implements OnApplicationBootstrap {
 
   constructor(
     private readonly ecoConfig: EcoConfigService,
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -82,8 +82,8 @@ export class BalanceService implements OnApplicationBootstrap {
     chainID: number,
     tokenAddresses: Hex[],
   ): Promise<Record<Hex, TokenBalance>> {
-    const client = await this.kernelAccountClientService.getClient(chainID)
-    const walletAddress = client.kernelAccount.address
+    const client = await this.simpleAccountClientService.getClient(chainID)
+    const walletAddress = client.simpleAccount.address
 
     this.logger.debug(
       EcoLogMessage.fromDefault({

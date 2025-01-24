@@ -9,7 +9,7 @@ import { erc20Abi, Hex, WatchContractEventReturnType, zeroHash } from 'viem'
 import { convertBigIntsToStrings } from '../common/viem/utils'
 import { EcoLogMessage } from '../common/logging/eco-log-message'
 import { getIntentJobId } from '../common/utils/strings'
-import { KernelAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
 
 @Injectable()
 export class BalanceWebsocketService implements OnApplicationBootstrap, OnModuleDestroy {
@@ -19,7 +19,7 @@ export class BalanceWebsocketService implements OnApplicationBootstrap, OnModule
 
   constructor(
     @InjectQueue(QUEUES.ETH_SOCKET.queue) private readonly ethQueue: Queue,
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
     private readonly ecoConfigService: EcoConfigService,
   ) {}
 
@@ -37,7 +37,7 @@ export class BalanceWebsocketService implements OnApplicationBootstrap, OnModule
 
     const websocketTasks = Object.entries(this.ecoConfigService.getSolvers()).map(
       async ([, solver]) => {
-        const client = await this.kernelAccountClientService.getClient(solver.chainID)
+        const client = await this.simpleAccountClientService.getClient(solver.chainID)
         // const instanceAddress = this.alchemyService.getWallet(solver.network).address
 
         Object.entries(solver.targets).forEach(([address, source]) => {
@@ -48,7 +48,7 @@ export class BalanceWebsocketService implements OnApplicationBootstrap, OnModule
               abi: erc20Abi,
               eventName: 'Transfer',
               // restrict transfers from anyone to the simple account address
-              args: { to: client.kernelAccount.address },
+              args: { to: client.simpleAccount.address },
               onLogs: this.addJob(solver.network, solver.chainID) as any,
             })
           }

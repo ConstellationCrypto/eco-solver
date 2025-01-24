@@ -3,7 +3,7 @@ import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from '@nestj
 import { EcoConfigService } from '../../eco-configs/eco-config.service'
 import { Solver } from '../../eco-configs/eco-config.types'
 import { Hex } from 'viem'
-import { KernelAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
 
 @Injectable()
@@ -13,7 +13,7 @@ export class PermissionHealthIndicator extends HealthIndicator {
     new Map()
 
   constructor(
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
     private readonly configService: EcoConfigService,
   ) {
     super()
@@ -44,8 +44,8 @@ export class PermissionHealthIndicator extends HealthIndicator {
 
   private async loadPermissions(solver: Solver) {
     const key = this.getSolverKey(solver.network, solver.chainID, solver.solverAddress)
-    const client = await this.kernelAccountClientService.getClient(solver.chainID)
-    const address = client.kernelAccount.address
+    const client = await this.simpleAccountClientService.getClient(solver.chainID)
+    const address = client.simpleAccount.address
     const whitelisted = await client.readContract({
       address: solver.solverAddress,
       abi: InboxAbi,

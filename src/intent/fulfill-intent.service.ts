@@ -24,7 +24,7 @@ import { IntentSourceModel } from './schemas/intent-source.schema'
 import { EcoConfigService } from '../eco-configs/eco-config.service'
 import { ProofService } from '../prover/proof.service'
 import { ExecuteSmartWalletArg } from '../transaction/smart-wallets/smart-wallet.types'
-import { KernelAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
 
 // TODO: Remove this once the updated routes-ts package is published
@@ -39,7 +39,7 @@ export class FulfillIntentService {
 
   constructor(
     @InjectModel(IntentSourceModel.name) private intentModel: Model<IntentSourceModel>,
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
     private readonly proofService: ProofService,
     private readonly utilsIntentService: UtilsIntentService,
     private readonly ecoConfigService: EcoConfigService,
@@ -67,7 +67,7 @@ export class FulfillIntentService {
       return
     }
 
-    const kernelAccountClient = await this.kernelAccountClientService.getClient(solver.chainID)
+    const simpleAccountClient = await this.simpleAccountClientService.getClient(solver.chainID)
 
     // Create transactions for intent targets
     const targetSolveTxs = this.getTransactionsForTargets(data)
@@ -88,9 +88,9 @@ export class FulfillIntentService {
     )
 
     try {
-      const transactionHash = await kernelAccountClient.execute(transactions)
+      const transactionHash = await simpleAccountClient.execute(transactions)
 
-      const receipt = await kernelAccountClient.waitForTransactionReceipt({ hash: transactionHash })
+      const receipt = await simpleAccountClient.waitForTransactionReceipt({ hash: transactionHash })
 
       // set the status and receipt for the model
       model.receipt = receipt as any
@@ -275,7 +275,7 @@ export class FulfillIntentService {
     solverAddress: Hex,
     model: IntentSourceModel,
   ): Promise<Hex | undefined> {
-    const client = await this.kernelAccountClientService.getClient(
+    const client = await this.simpleAccountClientService.getClient(
       Number(model.intent.destinationChainID),
     )
     const encodedMessageBody = encodeAbiParameters(

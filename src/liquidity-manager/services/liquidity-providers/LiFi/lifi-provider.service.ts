@@ -4,7 +4,7 @@ import { createConfig, EVM, executeRoute, getRoutes, RoutesRequest, SDKConfig } 
 import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
 import { logLiFiProcess } from '@/liquidity-manager/services/liquidity-providers/LiFi/utils/get-transaction-hashes'
-import { KernelAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
+import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
 
 @Injectable()
 export class LiFiProviderService implements OnModuleInit {
@@ -13,14 +13,14 @@ export class LiFiProviderService implements OnModuleInit {
 
   constructor(
     private readonly ecoConfigService: EcoConfigService,
-    private readonly kernelAccountClientService: KernelAccountClientV2Service,
+    private readonly simpleAccountClientService: SimpleAccountClientV2Service,
   ) {}
 
   async onModuleInit() {
     // Use first intent source's network as the default network
     const [intentSource] = this.ecoConfigService.getIntentSources()
 
-    const client = await this.kernelAccountClientService.getClient(intentSource.chainID)
+    const client = await this.simpleAccountClientService.getClient(intentSource.chainID)
     this.walletAddress = client.account!.address
 
     // Configure LiFi providers
@@ -30,7 +30,7 @@ export class LiFiProviderService implements OnModuleInit {
       providers: [
         EVM({
           getWalletClient: () => Promise.resolve(client),
-          switchChain: (chainId) => this.kernelAccountClientService.getClient(chainId),
+          switchChain: (chainId) => this.simpleAccountClientService.getClient(chainId),
         }),
       ],
     })

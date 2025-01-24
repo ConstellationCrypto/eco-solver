@@ -5,14 +5,14 @@ import { erc20Abi, Hex } from 'viem'
 import { Network } from 'alchemy-sdk'
 import { entries } from 'lodash'
 import { TargetContract } from '../../eco-configs/eco-config.types'
-import { KernelAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
 
 type TokenType = { decimal: string; value: string; minBalances?: number }
 @Injectable()
 export class BalanceHealthIndicator extends HealthIndicator {
   private logger = new Logger(BalanceHealthIndicator.name)
   constructor(
-    private readonly kernelAccountClientService: KernelAccountClientService,
+    private readonly simpleAccountClientService: SimpleAccountClientService,
     private readonly configService: EcoConfigService,
   ) {
     super()
@@ -57,8 +57,8 @@ export class BalanceHealthIndicator extends HealthIndicator {
     }[] = []
     const solvers = this.configService.getSolvers()
     const balanceTasks = entries(solvers).map(async ([, solver]) => {
-      const clientKernel = await this.kernelAccountClientService.getClient(solver.chainID)
-      const address = clientKernel.kernelAccount?.address
+      const clientKernel = await this.simpleAccountClientService.getClient(solver.chainID)
+      const address = clientKernel.simpleAccount?.address
 
       if (address) {
         const bal = await clientKernel.getBalance({ address })
@@ -86,8 +86,8 @@ export class BalanceHealthIndicator extends HealthIndicator {
     }> = []
     const IntentSources = this.configService.getIntentSources()
     for (const IntentSource of IntentSources) {
-      const client = await this.kernelAccountClientService.getClient(IntentSource.chainID)
-      const accountAddress = client.kernelAccountAddress
+      const client = await this.simpleAccountClientService.getClient(IntentSource.chainID)
+      const accountAddress = client.simpleAccountAddress
 
       const balances = await this.getBalanceCalls(IntentSource.chainID, IntentSource.tokens)
 
@@ -109,8 +109,8 @@ export class BalanceHealthIndicator extends HealthIndicator {
     const solverConfig = this.configService.getSolvers()
     await Promise.all(
       Object.entries(solverConfig).map(async ([, solver]) => {
-        const client = await this.kernelAccountClientService.getClient(solver.chainID)
-        const accountAddress = client.kernelAccountAddress
+        const client = await this.simpleAccountClientService.getClient(solver.chainID)
+        const accountAddress = client.simpleAccountAddress
         const tokens = Object.keys(solver.targets) as Hex[]
         const balances = await this.getBalanceCalls(solver.chainID, tokens)
         const mins = Object.values(solver.targets).map((target) => target.minBalance)
@@ -131,8 +131,8 @@ export class BalanceHealthIndicator extends HealthIndicator {
   }
 
   private async getBalanceCalls(chainID: number, tokens: Hex[]) {
-    const client = await this.kernelAccountClientService.getClient(chainID)
-    const accountAddress = client.kernelAccountAddress
+    const client = await this.simpleAccountClientService.getClient(chainID)
+    const accountAddress = client.simpleAccountAddress
 
     const balanceCalls = tokens.map((token) => {
       return [

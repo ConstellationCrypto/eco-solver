@@ -13,7 +13,7 @@ import { IntentSourceModel } from '../schemas/intent-source.schema'
 import { UtilsIntentService } from '../utils-intent.service'
 import { FulfillIntentService } from '../fulfill-intent.service'
 import { address1, address2 } from './feasable-intent.service.spec'
-import { KernelAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
 
 jest.mock('viem', () => {
   return {
@@ -24,7 +24,7 @@ jest.mock('viem', () => {
 
 describe('FulfillIntentService', () => {
   let fulfillIntentService: FulfillIntentService
-  let accountClientService: DeepMocked<KernelAccountClientService>
+  let accountClientService: DeepMocked<SimpleAccountClientService>
   let proofService: DeepMocked<ProofService>
   let utilsIntentService: DeepMocked<UtilsIntentService>
   let ecoConfigService: DeepMocked<EcoConfigService>
@@ -38,7 +38,7 @@ describe('FulfillIntentService', () => {
     const chainMod: TestingModule = await Test.createTestingModule({
       providers: [
         FulfillIntentService,
-        { provide: KernelAccountClientService, useValue: createMock<KernelAccountClientService>() },
+        { provide: SimpleAccountClientService, useValue: createMock<SimpleAccountClientService>() },
         { provide: ProofService, useValue: createMock<ProofService>() },
         { provide: UtilsIntentService, useValue: createMock<UtilsIntentService>() },
         { provide: EcoConfigService, useValue: createMock<EcoConfigService>() },
@@ -50,7 +50,7 @@ describe('FulfillIntentService', () => {
     }).compile()
 
     fulfillIntentService = chainMod.get(FulfillIntentService)
-    accountClientService = chainMod.get(KernelAccountClientService)
+    accountClientService = chainMod.get(SimpleAccountClientService)
     proofService = chainMod.get(ProofService)
     utilsIntentService = chainMod.get(UtilsIntentService)
     ecoConfigService = chainMod.get(EcoConfigService)
