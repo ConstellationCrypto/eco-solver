@@ -6,6 +6,9 @@ import { base, baseSepolia } from './definitions/base'
 import { arbitrum } from './definitions/arbitrum'
 import { mantle } from './definitions/mantle'
 import { polygon } from './definitions/polygon'
+import { curtis } from './definitions/curtis'
+import { mantaSepoliaTestnet } from './definitions/mantasepolia'
+import { zerionTestnet } from './definitions/zeriontestnet'
 
 /**
  * List of supported chains for the solver that have modified RPC URLs or are defined in the project
@@ -20,4 +23,7 @@ export const ChainsSupported: Chain[] = [
   arbitrum,
   mantle,
   polygon,
+  curtis,
+  mantaSepoliaTestnet,
+  zerionTestnet
 ]
