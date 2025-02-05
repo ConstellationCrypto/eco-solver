@@ -13,7 +13,7 @@ import { IntentSourceModel } from '../schemas/intent-source.schema'
 import { UtilsIntentService } from '../utils-intent.service'
 import { FulfillIntentService } from '../fulfill-intent.service'
 import { address1, address2 } from './feasable-intent.service.spec'
-import { SimpleAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '@/transaction/smart-wallets/simple-account/simple-account-client.service'
 
 jest.mock('viem', () => {
   return {

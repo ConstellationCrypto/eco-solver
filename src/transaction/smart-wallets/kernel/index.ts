@@ -1,2 +1,2 @@
-export * from './kernel-account.client'
-export * from './kernel-account.config'
+export * from './simple-account.client'
+export * from './simple-account.config'

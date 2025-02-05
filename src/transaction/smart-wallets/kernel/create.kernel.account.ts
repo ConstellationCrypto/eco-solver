@@ -9,12 +9,12 @@ import {
   publicActions,
   zeroAddress,
 } from 'viem'
-import { SimpleAccountClientConfig } from './kernel-account.config'
+import { SimpleAccountClientConfig } from './simple-account.config'
 import {
   DeployFactoryArgs,
   SimpleAccountActions,
   SimpleAccountClient,
-} from './kernel-account.client'
+} from './simple-account.client'
 import { KernelVersion, toEcdsaKernelSmartAccount } from 'permissionless/accounts'
 
 export type entryPointV_0_7 = '0.7'

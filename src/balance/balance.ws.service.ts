@@ -9,7 +9,7 @@ import { erc20Abi, Hex, WatchContractEventReturnType, zeroHash } from 'viem'
 import { convertBigIntsToStrings } from '../common/viem/utils'
 import { EcoLogMessage } from '../common/logging/eco-log-message'
 import { getIntentJobId } from '../common/utils/strings'
-import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/simple-account/simple-account-client.service'
 
 @Injectable()
 export class BalanceWebsocketService implements OnApplicationBootstrap, OnModuleDestroy {

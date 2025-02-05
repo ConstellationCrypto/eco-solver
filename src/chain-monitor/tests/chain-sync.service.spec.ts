@@ -8,7 +8,7 @@ import { IntentSourceModel } from '../../intent/schemas/intent-source.schema'
 import { Model } from 'mongoose'
 import { Solver, IntentSource } from '../../eco-configs/eco-config.types'
 import { entries } from 'lodash'
-import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/simple-account/simple-account-client.service'
 import { IntentSourceAbi } from '@eco-foundation/routes-ts'
 
 describe('ChainSyncService', () => {

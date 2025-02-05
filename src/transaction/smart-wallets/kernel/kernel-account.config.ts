@@ -1,7 +1,7 @@
 import { KernelVersion, ToEcdsaKernelSmartAccountParameters } from 'permissionless/accounts'
 import { Prettify, WalletClientConfig } from 'viem'
 import { SmartWalletActions } from '../smart-wallet.types'
-import { DeployFactoryArgs } from './kernel-account.client'
+import { DeployFactoryArgs } from './simple-account.client'
 
 export type SimpleAccountClientConfig<
   entryPointVersion extends '0.6' | '0.7',

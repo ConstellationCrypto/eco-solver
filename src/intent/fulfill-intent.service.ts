@@ -24,7 +24,7 @@ import { IntentSourceModel } from './schemas/intent-source.schema'
 import { EcoConfigService } from '../eco-configs/eco-config.service'
 import { ProofService } from '../prover/proof.service'
 import { ExecuteSmartWalletArg } from '../transaction/smart-wallets/smart-wallet.types'
-import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/simple-account/simple-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
 
 // TODO: Remove this once the updated routes-ts package is published

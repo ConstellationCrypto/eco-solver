@@ -4,7 +4,7 @@ import { createConfig, EVM, executeRoute, getRoutes, RoutesRequest, SDKConfig } 
 import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
 import { logLiFiProcess } from '@/liquidity-manager/services/liquidity-providers/LiFi/utils/get-transaction-hashes'
-import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
+import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/simple-account/simple-account-client-v2.service'
 
 @Injectable()
 export class LiFiProviderService implements OnModuleInit {

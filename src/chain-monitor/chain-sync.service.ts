@@ -9,7 +9,7 @@ import { IntentCreatedLog } from '../contracts'
 import { entries } from 'lodash'
 import { BlockTag } from 'viem'
 import { WatchCreateIntentService } from '../watch/intent/watch-create-intent.service'
-import { SimpleAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../transaction/smart-wallets/simple-account/simple-account-client.service'
 import { IntentSourceAbi } from '@eco-foundation/routes-ts'
 
 /**

@@ -20,8 +20,8 @@ import {
   Transport,
 } from 'viem'
 import { SendUserOperationParameters } from 'viem/account-abstraction'
-import { encodeKernelExecuteCallData } from '@/transaction/smart-wallets/kernel/actions/encodeData.kernel'
-import { entryPointV_0_7 } from '@/transaction/smart-wallets/kernel/create.kernel.account'
+import { encodeKernelExecuteCallData } from '@/transaction/smart-wallets/simple-account/actions/encodeData.kernel'
+import { entryPointV_0_7 } from '@/transaction/smart-wallets/simple-account/create.kernel.account'
 import { sendTransaction } from 'viem/actions'
 
 export type SimpleAccountClientV2Config<

@@ -3,7 +3,7 @@ import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from '@nestj
 import { EcoConfigService } from '../../eco-configs/eco-config.service'
 import { Solver } from '../../eco-configs/eco-config.types'
 import { Hex } from 'viem'
-import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/simple-account/simple-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
 
 @Injectable()

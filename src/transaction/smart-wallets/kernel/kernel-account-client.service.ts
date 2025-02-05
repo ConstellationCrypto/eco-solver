@@ -4,10 +4,10 @@ import { entryPoint07Address } from 'viem/account-abstraction'
 import { EcoConfigService } from '../../../eco-configs/eco-config.service'
 import { SignerService } from '../../../sign/signer.service'
 import { Chain, Hex, zeroAddress } from 'viem'
-import { SimpleAccountClientConfig } from './kernel-account.config'
+import { SimpleAccountClientConfig } from './simple-account.config'
 import { KernelVersion } from 'permissionless/accounts'
 import { createSimpleAccountClient, entryPointV_0_7 } from './create.kernel.account'
-import { SimpleAccountClient } from './kernel-account.client'
+import { SimpleAccountClient } from './simple-account.client'
 import { EcoLogMessage } from '../../../common/logging/eco-log-message'
 
 @Injectable()

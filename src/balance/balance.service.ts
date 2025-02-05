@@ -6,7 +6,7 @@ import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import { erc20Abi, Hex, MulticallParameters, MulticallReturnType } from 'viem'
 import { ViemEventLog } from '@/common/events/viem'
 import { decodeTransferLog, isSupportedTokenType } from '@/contracts'
-import { SimpleAccountClientService } from '@/transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '@/transaction/smart-wallets/simple-account/simple-account-client.service'
 import { TokenBalance, TokenConfig } from '@/balance/types'
 import { EcoError } from '@/common/errors/eco-error'
 

@@ -10,7 +10,7 @@ import {
   createSimpleAccountClientV2,
   SimpleAccountClientV2,
   SimpleAccountClientV2Config,
-} from '@/transaction/smart-wallets/kernel/create-kernel-client-v2.account'
+} from '@/transaction/smart-wallets/simple-account/create-kernel-client-v2.account'
 
 class SimpleAccountClientV2ServiceBase<
   entryPointVersion extends '0.6' | '0.7',

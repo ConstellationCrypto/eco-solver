@@ -8,7 +8,7 @@ import * as LiFi from '@lifi/sdk'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
 import { LiquidityManagerQueue } from '@/liquidity-manager/queues/liquidity-manager.queue'
 import { LiFiProviderService } from '@/liquidity-manager/services/liquidity-providers/LiFi/lifi-provider.service'
-import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/kernel/kernel-account-client-v2.service'
+import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/simple-account/simple-account-client-v2.service'
 
 describe('LiFiProviderService', () => {
   let lifiProviderService: LiFiProviderService

@@ -11,7 +11,7 @@ import {
 } from 'viem'
 import { ExecuteSmartWalletArgs, SmartWalletClient } from '../smart-wallet.types'
 import { ToEcdsaKernelSmartAccountReturnType } from 'permissionless/accounts'
-import { KernelWalletActions } from './kernel-account.config'
+import { KernelWalletActions } from './simple-account.config'
 import { encodeKernelExecuteCallData } from './actions/encodeData.kernel'
 
 export type DeployFactoryArgs = {

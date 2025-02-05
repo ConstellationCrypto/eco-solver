@@ -5,7 +5,7 @@ import { erc20Abi, Hex } from 'viem'
 import { Network } from 'alchemy-sdk'
 import { entries } from 'lodash'
 import { TargetContract } from '../../eco-configs/eco-config.types'
-import { SimpleAccountClientService } from '../../transaction/smart-wallets/kernel/kernel-account-client.service'
+import { SimpleAccountClientService } from '../../transaction/smart-wallets/simple-account/simple-account-client.service'
 
 type TokenType = { decimal: string; value: string; minBalances?: number }
 @Injectable()
