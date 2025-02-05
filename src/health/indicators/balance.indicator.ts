@@ -58,7 +58,7 @@ export class BalanceHealthIndicator extends HealthIndicator {
     const solvers = this.configService.getSolvers()
     const balanceTasks = entries(solvers).map(async ([, solver]) => {
       const clientKernel = await this.simpleAccountClientService.getClient(solver.chainID)
-      const address = clientKernel.simpleAccount?.address
+      const address = clientKernel.simpleAccountAddress //clientKernel.simpleAccount?.address
 
       if (address) {
         const bal = await clientKernel.getBalance({ address })

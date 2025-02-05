@@ -83,7 +83,7 @@ export class BalanceService implements OnApplicationBootstrap {
     tokenAddresses: Hex[],
   ): Promise<Record<Hex, TokenBalance>> {
     const client = await this.simpleAccountClientService.getClient(chainID)
-    const walletAddress = client.simpleAccount.address
+    const walletAddress = client.simpleAccountAddress
 
     this.logger.debug(
       EcoLogMessage.fromDefault({

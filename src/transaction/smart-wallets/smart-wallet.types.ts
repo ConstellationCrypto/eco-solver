@@ -9,7 +9,7 @@ import {
   WalletRpcSchema,
   PublicActions,
 } from 'viem'
-import { DeployFactoryArgs } from './kernel'
+//import { DeployFactoryArgs } from './kernel'
 
 // The type that simple account executes arrays of
 export type ExecuteSmartWalletArg = { to: Hex; data: Hex; value?: bigint }
@@ -18,7 +18,7 @@ export type ExecuteSmartWalletArgs = ExecuteSmartWalletArg[]
 
 export type SmartWalletActions = {
   execute: (args: ExecuteSmartWalletArgs) => Promise<Hex>
-  deploySimpleAccount: () => Promise<DeployFactoryArgs>
+  //deploySimpleAccount: () => Promise<DeployFactoryArgs>
 }
 
 export type SmartWalletClient<

@@ -45,7 +45,7 @@ export class PermissionHealthIndicator extends HealthIndicator {
   private async loadPermissions(solver: Solver) {
     const key = this.getSolverKey(solver.network, solver.chainID, solver.solverAddress)
     const client = await this.simpleAccountClientService.getClient(solver.chainID)
-    const address = client.simpleAccount.address
+    const address = client.simpleAccountAddress
     const whitelisted = await client.readContract({
       address: solver.solverAddress,
       abi: InboxAbi,

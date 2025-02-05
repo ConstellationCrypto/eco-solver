@@ -4,7 +4,7 @@ import { SimpleAccountClientService } from './smart-wallets/simple-account/simpl
 import { MultichainPublicClientService } from './multichain-public-client.service'
 import { ViemMultichainClientService } from './viem_multichain_client.service'
 //import { SimpleAccountClientService } from './smart-wallets/simple-account/simple-account-client.service'
-import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/simple-account/simple-account-client-v2.service'
+//import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/simple-account/simple-account-client-v2.service'
 
 @Module({
   imports: [SignModule],
@@ -13,13 +13,13 @@ import { SimpleAccountClientV2Service } from '@/transaction/smart-wallets/simple
     MultichainPublicClientService,
     ViemMultichainClientService,
     SimpleAccountClientService,
-    SimpleAccountClientV2Service,
+    //SimpleAccountClientV2Service,
   ],
   exports: [
     SimpleAccountClientService,
     MultichainPublicClientService,
     SimpleAccountClientService,
-    SimpleAccountClientV2Service,
+    //SimpleAccountClientV2Service,
   ],
 })
 export class TransactionModule {}
