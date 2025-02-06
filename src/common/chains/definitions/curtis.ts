@@ -4,7 +4,10 @@ import { curtis as vcurtis } from 'viem/chains'
 export const curtis: Chain = {
   ...vcurtis,
   rpcUrls: {
-    ...vcurtis.rpcUrls,
+    //...vcurtis.rpcUrls,
+    default: {
+      http: ['https://curtis.rpc.caldera.xyz/direct-http-01'],
+    },
   },
   contracts: {
     ...vcurtis.contracts,
