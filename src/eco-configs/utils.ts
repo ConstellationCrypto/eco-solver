@@ -44,15 +44,15 @@ export function getChainConfig(chainID: number | string): EcoChainConfig {
   if (id === "33111-pre") {
     return {
       // Prover: "0xac3f4357d650109a94c4a977f6c327b140cbac37";
-      IntentSource: "0x885e2917f4Ab2669D2A87cd8B0EFd4B51BD763d2",
-      Inbox: "0x9fb8BB3A79515Ec6E755b833e2c178ed775FD95E",
-      HyperProver: "0x436E7056A47AD2F1e2C788a26e6b8350AA4B7302",
+      IntentSource: "0xf2d066292Aa5Ab276EB40ac94735DFF9458C30A8",
+      Inbox: "0xDE58509Af9CFDDde46cfcb7856D64ebDd6e76Dd4",
+      HyperProver: "0x658AFcae7bB1342E4A9C363F86706Fb3B8A703EA",
     };
   } else if (id === "3441006-pre") {
     return {
-      IntentSource: "0x885e2917f4Ab2669D2A87cd8B0EFd4B51BD763d2",
-      Inbox: "0x885e2917f4Ab2669D2A87cd8B0EFd4B51BD763d2",
-      HyperProver: "0xac3f4357d650109a94c4a977f6c327b140cbac37",
+      IntentSource: "0x7e0400Eb1508f4c8A2C33a46c7Ce308C650ccDe6",
+      Inbox: "0xC8CFd1aA8153Ec5F41d8F6FBCf8ec4B1AD8b779c",
+      HyperProver: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
     };
   }
   const config = EcoProtocolAddresses[id]

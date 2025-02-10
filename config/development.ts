@@ -50,6 +50,7 @@ export default {
   ],
   solvers: {
     33111: {
+      solverAddress: '0xf9219Acf7A94e5069c8fE71f75eE9186957e7E90',
       targets: {
         '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78': {
           contractType: 'erc20',
@@ -68,6 +69,7 @@ export default {
       chainID: 33111,
     },
     3441006: {
+      solverAddress: '0xf9219Acf7A94e5069c8fE71f75eE9186957e7E90',
       targets: {
         '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c': {
           contractType: 'erc20',
