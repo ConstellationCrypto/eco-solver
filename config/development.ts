@@ -28,6 +28,22 @@ export default {
       },
     },
   },
+  /*
+  if (id === "33111-pre") {
+    return {
+      // Prover: "0xac3f4357d650109a94c4a977f6c327b140cbac37";
+      IntentSource: "0xD7f316e387107b90dFBBDCb07bEC7280A729ce88",
+      Inbox: "0x04fA0CeB5eaAf33084DDd4A7cda74F01767B4507",
+      HyperProver: "0x3e27B444B5E543cbFF449115DE4a36705a891F82",
+    };
+  } else if (id === "3441006-pre") {
+    return {
+      IntentSource: "0x7e0400Eb1508f4c8A2C33a46c7Ce308C650ccDe6",
+      Inbox: "0xC8CFd1aA8153Ec5F41d8F6FBCf8ec4B1AD8b779c",
+      HyperProver: "0x7d89991BFF4B2665f7Ace724789Cf2ACBBF46A39", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
+    };
+  }
+  */
   intentSources: [
     {
       network: 'Curtis',
@@ -36,7 +52,7 @@ export default {
         '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78', //usdc
         '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77', //usdt
       ],
-      provers: ['0x436E7056A47AD2F1e2C788a26e6b8350AA4B7302'],
+      provers: ['0x3e27B444B5E543cbFF449115DE4a36705a891F82'],
     },
     {
       network: 'manta-sepolia',
@@ -45,12 +61,12 @@ export default {
         '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c', //usdc
         '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F', //usdt
       ],
-      provers: ['0xac3f4357d650109a94c4a977f6c327b140cbac37'],
+      provers: ['0x7d89991BFF4B2665f7Ace724789Cf2ACBBF46A39'],
     },
   ],
   solvers: {
     33111: {
-      solverAddress: '0xDE58509Af9CFDDde46cfcb7856D64ebDd6e76Dd4',
+      solverAddress: '0x04fA0CeB5eaAf33084DDd4A7cda74F01767B4507',
       targets: {
         '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78': {
           contractType: 'erc20',

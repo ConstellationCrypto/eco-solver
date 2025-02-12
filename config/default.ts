@@ -93,6 +93,9 @@ export default {
       deficit: 0.2,
     },
   },
+  fulfillment: {
+    run: 'single',
+  },
   externalAPIs: {},
   logger: {
     usePino: true,
