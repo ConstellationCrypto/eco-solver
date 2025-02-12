@@ -244,6 +244,7 @@ export class UtilsIntentService {
       }
 
       const solver = this.ecoConfigService.getSolver(model.intent.destinationChainID)
+      console.log(solver)
       if (!solver) {
         this.logger.log(
           EcoLogMessage.fromDefault({
