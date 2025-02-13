@@ -224,6 +224,7 @@ export class FulfillIntentService {
     inboxAddress: Hex,
     model: IntentSourceModel,
   ): Promise<ExecuteSmartWalletArg> {
+    console.log("in fulfill intent")
     const claimant = this.ecoConfigService.getEth().claimant
     const isHyperlane = this.proofService.isHyperlaneProver(model.intent.reward.prover)
     const isMetalayer = this.proofService.isMetalayerProver(model.intent.reward.prover)

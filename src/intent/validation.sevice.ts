@@ -102,6 +102,7 @@ export class ValidationService {
    * @returns
    */
   supportedProver(ops: { sourceChainID: bigint; prover: Hex }): boolean {
+    console.log("checking supported prover")
     const srcSolvers = this.ecoConfigService.getIntentSources().filter((intent) => {
       return BigInt(intent.chainID) == ops.sourceChainID
     })
