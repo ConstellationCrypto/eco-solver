@@ -5,11 +5,16 @@ import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import {
   LiquidityManagerJob,
   LiquidityManagerJobManager,
-} from '@/liquidity-manager/jobs/liquidity-manager-job.manager'
+} from '@/liquidity-manager/jobs/liquidity-manager.job'
 import { LiquidityManagerJobName } from '@/liquidity-manager/queues/liquidity-manager.queue'
 import { LiquidityManagerProcessor } from '@/liquidity-manager/processors/eco-protocol-intents.processor'
 import { shortAddr } from '@/liquidity-manager/utils/address'
 import { removeJobSchedulers } from '@/bullmq/utils/queue'
+import {
+  RebalanceQuote,
+  RebalanceRequest,
+  TokenDataAnalyzed,
+} from '@/liquidity-manager/types/types'
 
 /**
  * A cron job that checks token balances, logs information, and attempts to rebalance deficits.
@@ -64,7 +69,7 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
       }),
     )
 
-    processor.logger.log('\n' + this.displayTokenTable(items))
+    processor.logger.log(this.displayTokenTable(items))
 
     if (!deficit.total) {
       processor.logger.log(
@@ -75,7 +80,7 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
       return
     }
 
-    const rebalances: LiquidityManager.RebalanceRequest[] = []
+    const rebalances: RebalanceRequest[] = []
 
     for (const deficitToken of deficit.items) {
       const rebalancingQuotes = await processor.liquidityManagerService.getOptimizedRebalancing(
@@ -97,10 +102,15 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
 
       this.updateGroupBalances(processor, surplus.items, rebalancingQuotes)
 
-      rebalances.push({ token: deficitToken, quotes: rebalancingQuotes })
+      const rebalanceRequest = { token: deficitToken, quotes: rebalancingQuotes }
+
+      // Store rebalance request on DB
+      await processor.liquidityManagerService.storeRebalancing(rebalanceRequest)
+
+      rebalances.push(rebalanceRequest)
     }
 
-    processor.logger.log('\n' + this.displayRebalancingTable(rebalances))
+    processor.logger.log(this.displayRebalancingTable(rebalances))
 
     await processor.liquidityManagerService.startRebalancing(rebalances)
   }
@@ -125,7 +135,7 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
    * @param items - The token data to display.
    * @returns A formatted table as a string.
    */
-  private displayTokenTable(items: LiquidityManager.TokenDataAnalyzed[]) {
+  private displayTokenTable(items: TokenDataAnalyzed[]) {
     const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format
 
     const header = ['Chain ID', 'Address', 'Balance', 'Target', 'Range', 'State']
@@ -150,7 +160,7 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
    * @param items - The token data to display.
    * @returns A formatted table as a string.
    */
-  private displayRebalancingTable(items: LiquidityManager.RebalanceRequest[]) {
+  private displayRebalancingTable(items: RebalanceRequest[]) {
     // Skip if no rebalancing quotes are found.
     if (!items.length) return
 
@@ -199,8 +209,8 @@ export class CheckBalancesCronJobManager extends LiquidityManagerJobManager {
    */
   private updateGroupBalances(
     processor: LiquidityManagerProcessor,
-    items: LiquidityManager.TokenDataAnalyzed[],
-    rebalancingQuotes: LiquidityManager.Quote[],
+    items: TokenDataAnalyzed[],
+    rebalancingQuotes: RebalanceQuote[],
   ) {
     for (const quote of rebalancingQuotes) {
       // Iterate through each rebalancing quote.

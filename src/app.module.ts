@@ -5,7 +5,6 @@ import { EcoConfigService } from './eco-configs/eco-config.service'
 import { LoggerModule } from 'nestjs-pino'
 import { MongooseModule } from '@nestjs/mongoose'
 import { IntentModule } from './intent/intent.module'
-import { IntentSourceModel } from './intent/schemas/intent-source.schema'
 import { BalanceModule } from './balance/balance.module'
 import { SignModule } from './sign/sign.module'
 import { ProverModule } from './prover/prover.module'
@@ -17,20 +16,19 @@ import { LiquidityManagerModule } from '@/liquidity-manager/liquidity-manager.mo
 import { ApiModule } from '@/api/api.module'
 import { WatchModule } from '@/watch/watch.module'
 import { IntervalModule } from '@/intervals/interval.module'
+import { QuoteModule } from '@/quote/quote.module'
+import { FeeModule } from '@/fee/fee.module'
 
 @Module({
   imports: [
     ApiModule,
     BalanceModule,
     ChainMonitorModule,
-    EcoConfigModule.withAWS(),
-    //EcoConfigModule.base(),
-
-    //FlagsModule,
+//     EcoConfigModule.withAWS(),
+//     FlagsModule,
     HealthModule,
     IntentModule,
     SignModule,
-    IntentSourceModel,
     IntervalModule,
     ProcessorModule,
     MongooseModule.forRootAsync({
@@ -43,6 +41,7 @@ import { IntervalModule } from '@/intervals/interval.module'
       },
     }),
     ProverModule,
+    QuoteModule,
     SolverModule,
     LiquidityManagerModule,
     WatchModule,

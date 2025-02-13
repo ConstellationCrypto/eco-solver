@@ -1,17 +1,40 @@
-import { ContractFunctionReturnType, decodeEventLog, Hex, Log, Prettify } from 'viem'
+import { decodeEventLog, DecodeEventLogReturnType, GetEventArgs, Hex, Log, Prettify } from 'viem'
 import { ExtractAbiEvent } from 'abitype'
 import { Network } from 'alchemy-sdk'
 import { IntentSourceAbi } from '@eco-foundation/routes-ts'
-
-// Define the type for the contract
-export type IntentSource = typeof IntentSourceAbi
+import { CallDataType, RewardTokensType } from '@/quote/dto/types'
 
 // Define the type for the IntentSource struct in the contract, and add the hash and logIndex fields
-export type IntentSourceViemType = Prettify<
-  ContractFunctionReturnType<IntentSource, 'pure' | 'view', 'getIntent', [Hex]> & {
+export type IntentCreatedEventViemType = Prettify<
+  GetEventArgs<
+    typeof IntentSourceAbi,
+    'IntentCreated',
+    {
+      EnableUnion: true
+      IndexedOnly: false
+      Required: false
+    }
+  > & {
     hash: Hex
     logIndex: number
   }
+>
+/**
+ * Define the interface for the calls field in the IntentSource event
+ */
+export interface CallDataInterface extends CallDataType {}
+
+/**
+ * Define the interface for the token amount field in the IntentSource event
+ */
+export interface RewardTokensInterface extends RewardTokensType {}
+
+/**
+ * Define the type for the IntentSource event log
+ */
+export type IntentCreatedEventLog = DecodeEventLogReturnType<
+  typeof IntentSourceAbi,
+  'IntentCreated'
 >
 
 // Define the type for the IntentCreated event log

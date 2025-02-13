@@ -1,6 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Model } from 'mongoose'
-import { InjectModel } from '@nestjs/mongoose'
 import {
   ContractFunctionArgs,
   ContractFunctionName,
@@ -26,6 +24,9 @@ import { ProofService } from '../prover/proof.service'
 import { ExecuteSmartWalletArg } from '../transaction/smart-wallets/smart-wallet.types'
 import { KernelAccountClientService } from '../transaction/smart-wallets/kernel/kernel-account-client.service'
 import { InboxAbi } from '@eco-foundation/routes-ts'
+import { getTransactionTargetData } from '@/intent/utils'
+import { FeeService } from '@/fee/fee.service'
+import { IntentDataModel } from '@/intent/schemas/intent-data.schema'
 
 // TODO: Remove this once the updated routes-ts package is published
 type FulfillmentMethod = ContractFunctionName<typeof InboxAbi> | 'fulfillMetalayerInstant'
@@ -38,9 +39,9 @@ export class FulfillIntentService {
   private logger = new Logger(FulfillIntentService.name)
 
   constructor(
-    @InjectModel(IntentSourceModel.name) private intentModel: Model<IntentSourceModel>,
     private readonly kernelAccountClientService: KernelAccountClientService,
     private readonly proofService: ProofService,
+    private readonly feeService: FeeService,
     private readonly utilsIntentService: UtilsIntentService,
     private readonly ecoConfigService: EcoConfigService,
   ) {}
@@ -73,21 +74,23 @@ export class FulfillIntentService {
     const targetSolveTxs = this.getTransactionsForTargets(data)
 
     // Create fulfill tx
-    const fulfillTx = await this.getFulfillIntentTx(solver.solverAddress, model)
+    const fulfillTx = await this.getFulfillIntentTx(solver.inboxAddress, model)
 
     // Combine all transactions
     const transactions = [...targetSolveTxs, fulfillTx]
 
     this.logger.debug(
       EcoLogMessage.fromDefault({
-        message: `Fulfilling batch transaction`,
+        message: `Fulfilling ${this.getFulfillment()} transaction`,
         properties: {
-          batch: transactions,
+          transactions,
         },
       }),
     )
 
     try {
+      await this.finalFeasibilityCheck(model.intent)
+
       const transactionHash = await kernelAccountClient.execute(transactions)
 
       const receipt = await kernelAccountClient.waitForTransactionReceipt({ hash: transactionHash })
@@ -104,7 +107,7 @@ export class FulfillIntentService {
           message: `Fulfilled transactionHash ${receipt.transactionHash}`,
           properties: {
             userOPHash: receipt,
-            destinationChainID: model.intent.destinationChainID,
+            destinationChainID: model.intent.route.destination,
             sourceChainID: model.event.sourceChainID,
           },
         }),
@@ -134,6 +137,20 @@ export class FulfillIntentService {
   }
 
   /**
+   * Checks that the intent is feasible for the fulfillment. This
+   * could occur due to changes to the fees/limits of the intent. A failed
+   * intent might retry later when its no longer profitable, etc.
+   * Throws an error if the intent is not feasible.
+   * @param intent the intent to check
+   */
+  async finalFeasibilityCheck(intent: IntentDataModel) {
+    const { error } = await this.feeService.isRouteFeasible(intent)
+    if (error) {
+      throw error
+    }
+  }
+
+  /**
    * Checks if the transaction is feasible for an erc20 token transfer.
    *
    * @param tt the transaction target data
@@ -145,11 +162,12 @@ export class FulfillIntentService {
     switch (tt.selector) {
       case getERC20Selector('transfer'):
         const dstAmount = tt.decodedFunctionData.args?.[1] as bigint
-
+        // Approve the inbox to spend the amount, inbox contract pulls the funds
+        // then does the transfer call for the target
         const transferFunctionData = encodeFunctionData({
           abi: erc20Abi,
-          functionName: 'transfer',
-          args: [solver.solverAddress, dstAmount],
+          functionName: 'approve',
+          args: [solver.inboxAddress, dstAmount], //spender, amount
         })
 
         return [{ to: target, data: transferFunctionData }]
@@ -170,13 +188,8 @@ export class FulfillIntentService {
     }
 
     // Create transactions for intent targets
-    return model.intent.targets.flatMap((target, index) => {
-      const tt = this.utilsIntentService.getTransactionTargetData(
-        model,
-        solver,
-        target,
-        model.intent.data[index],
-      )
+    return model.intent.route.calls.flatMap((call) => {
+      const tt = getTransactionTargetData(solver, call)
       if (tt === null) {
         this.logger.error(
           EcoLogMessage.withError({
@@ -192,7 +205,7 @@ export class FulfillIntentService {
 
       switch (tt.targetConfig.contractType) {
         case 'erc20':
-          return this.handleErc20(tt, solver, target)
+          return this.handleErc20(tt, solver, call.target)
         case 'erc721':
         case 'erc1155':
         default:
@@ -203,35 +216,37 @@ export class FulfillIntentService {
 
   /**
    * Returns the fulfill intent data
-   * @param solverAddress
+   * @param inboxAddress
    * @param model
    * @private
    */
   private async getFulfillIntentTx(
-    solverAddress: Hex,
+    inboxAddress: Hex,
     model: IntentSourceModel,
   ): Promise<ExecuteSmartWalletArg> {
     const claimant = this.ecoConfigService.getEth().claimant
-    const isHyperlane = this.proofService.isHyperlaneProver(model.intent.prover)
-    const isMetalayer = this.proofService.isMetalayerProver(model.intent.prover)
-    const functionName: FulfillmentMethod = this.proofService.isStorageProver(model.intent.prover)
+    const isHyperlane = this.proofService.isHyperlaneProver(model.intent.reward.prover)
+    const isMetalayer = this.proofService.isMetalayerProver(model.intent.reward.prover)
+    const functionName: FulfillmentMethod = this.proofService.isStorageProver(
+      model.intent.reward.prover,
+    )
+
       ? 'fulfillStorage'
       : isMetalayer
       ? 'fulfillMetalayerInstant'
       : this.getFulfillment()
 
     const args = [
-      model.event.sourceChainID,
-      model.intent.targets,
-      model.intent.data,
-      model.intent.expiryTime,
-      model.intent.nonce,
+      model.intent.route,
+      // @ts-expect-error we dynamically set the args
+      model.intent.reward.getHash(),
       claimant,
-      model.intent.hash,
+      // @ts-expect-error we dynamically set the args
+      model.intent.getHash().intentHash,
     ]
 
     if (isHyperlane) {
-      args.push(model.intent.prover)
+      args.push(model.intent.reward.prover)
       if (functionName === 'fulfillHyperInstantWithRelayer') {
         args.push('0x0')
         args.push(zeroAddress)
@@ -240,10 +255,9 @@ export class FulfillIntentService {
       args.push(model.intent.prover)
       args.push([]) // Empty reads array for now - can be enhanced later if needed
     }
-
     let fee = 0n
-    if (isHyperlane) {
-      fee = BigInt((await this.getHyperlaneFee(solverAddress, model)) || '0x0')
+    if (isHyperlane && functionName === 'fulfillHyperInstantWithRelayer') {
+      fee = BigInt((await this.getHyperlaneFee(inboxAddress, model)) || '0x0')
     }
     // TODO: Add Metalayer fee support once available
     // if (isMetalayer) {
@@ -259,7 +273,7 @@ export class FulfillIntentService {
     })
 
     return {
-      to: solverAddress,
+      to: inboxAddress,
       data: fulfillIntentData,
       // ...(isHyperlane && fee > 0 && { value: fee }),
       value: fee,
@@ -272,11 +286,11 @@ export class FulfillIntentService {
    * @private
    */
   private async getHyperlaneFee(
-    solverAddress: Hex,
+    inboxAddress: Hex,
     model: IntentSourceModel,
   ): Promise<Hex | undefined> {
     const client = await this.kernelAccountClientService.getClient(
-      Number(model.intent.destinationChainID),
+      Number(model.intent.route.destination),
     )
     const encodedMessageBody = encodeAbiParameters(
       [{ type: 'bytes[]' }, { type: 'address[]' }],
@@ -285,7 +299,7 @@ export class FulfillIntentService {
     const functionName = 'fetchFee'
     const args: ContractFunctionArgs<typeof InboxAbi, 'view', typeof functionName> = [
       model.event.sourceChainID, //_sourceChainID
-      pad(model.intent.prover), //_prover
+      pad(model.intent.reward.prover), //_prover
       encodedMessageBody, //_messageBody
       '0x0', //_metadata
       zeroAddress, //_postDispatchHook
@@ -296,7 +310,7 @@ export class FulfillIntentService {
       args,
     })
     const proverData = await client.call({
-      to: solverAddress,
+      to: inboxAddress,
       data: callData,
     })
     return proverData.data

@@ -1,7 +1,10 @@
+import { Model } from 'mongoose'
+import { InjectModel } from '@nestjs/mongoose'
 import { InjectFlowProducer, InjectQueue } from '@nestjs/bullmq'
 import { FlowProducer } from 'bullmq'
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
 import { groupBy } from 'lodash'
+import { v4 as uuid } from 'uuid'
 import { BalanceService } from '@/balance/balance.service'
 import { TokenState } from '@/liquidity-manager/types/token-state.enum'
 import {
@@ -14,11 +17,19 @@ import {
   LiquidityManagerQueue,
   LiquidityManagerQueueType,
 } from '@/liquidity-manager/queues/liquidity-manager.queue'
-import { RebalanceJobManager, RebalanceJobData } from '@/liquidity-manager/jobs/rebalanceJobManager'
+import { RebalanceJobData, RebalanceJobManager } from '@/liquidity-manager/jobs/rebalance.job'
 import { LiquidityProviderService } from '@/liquidity-manager/services/liquidity-provider.service'
 import { deserialize } from '@/liquidity-manager/utils/serialize'
 import { LiquidityManagerConfig } from '@/eco-configs/eco-config.types'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
+import { RebalanceModel } from '@/liquidity-manager/schemas/rebalance.schema'
+import { RebalanceTokenModel } from '@/liquidity-manager/schemas/rebalance-token.schema'
+import {
+  RebalanceQuote,
+  RebalanceRequest,
+  TokenData,
+  TokenDataAnalyzed,
+} from '@/liquidity-manager/types/types'
 
 @Injectable()
 export class LiquidityManagerService implements OnApplicationBootstrap {
@@ -30,6 +41,8 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     queue: LiquidityManagerQueueType,
     @InjectFlowProducer(LiquidityManagerQueue.flowName)
     protected liquidityManagerFlowProducer: FlowProducer,
+    @InjectModel(RebalanceModel.name)
+    private readonly rebalanceModel: Model<RebalanceModel>,
     public readonly balanceService: BalanceService,
     private readonly ecoConfigService: EcoConfigService,
     public readonly liquidityProviderManager: LiquidityProviderService,
@@ -43,8 +56,8 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
   }
 
   async analyzeTokens() {
-    const tokens: LiquidityManager.TokenData[] = await this.balanceService.getAllTokenData()
-    const analysis: LiquidityManager.TokenDataAnalyzed[] = tokens.map((item) => ({
+    const tokens: TokenData[] = await this.balanceService.getAllTokenData()
+    const analysis: TokenDataAnalyzed[] = tokens.map((item) => ({
       ...item,
       analysis: this.analyzeToken(item),
     }))
@@ -53,11 +66,12 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     return {
       items: analysis,
       surplus: analyzeTokenGroup(groups[TokenState.SURPLUS] ?? []),
+      inrange: analyzeTokenGroup(groups[TokenState.IN_RANGE] ?? []),
       deficit: analyzeTokenGroup(groups[TokenState.DEFICIT] ?? []),
     }
   }
 
-  analyzeToken(token: LiquidityManager.TokenData) {
+  analyzeToken(token: TokenData) {
     return analyzeToken(token.config, token.balance, {
       up: this.config.thresholds.surplus,
       down: this.config.thresholds.deficit,
@@ -73,8 +87,8 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
    * @param surplusTokens
    */
   async getOptimizedRebalancing(
-    deficitToken: LiquidityManager.TokenDataAnalyzed,
-    surplusTokens: LiquidityManager.TokenDataAnalyzed[],
+    deficitToken: TokenDataAnalyzed,
+    surplusTokens: TokenDataAnalyzed[],
   ) {
     const swapQuotes = await this.getSwapQuotes(deficitToken, surplusTokens)
 
@@ -84,7 +98,7 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     return this.getRebalancingQuotes(deficitToken, surplusTokens)
   }
 
-  startRebalancing(rebalances: LiquidityManager.RebalanceRequest[]) {
+  startRebalancing(rebalances: RebalanceRequest[]) {
     const jobs = rebalances.map((rebalance) =>
       RebalanceJobManager.createJob(rebalance, this.liquidityManagerQueue.name),
     )
@@ -95,6 +109,28 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     })
   }
 
+  async executeRebalancing(rebalanceData: RebalanceJobData) {
+    for (const quote of rebalanceData.rebalance.quotes) {
+      await this.liquidityProviderManager.execute(deserialize(quote))
+    }
+  }
+
+  async storeRebalancing(request: RebalanceRequest) {
+    const groupId = uuid()
+    for (const quote of request.quotes) {
+      await this.rebalanceModel.create({
+        groupId,
+        amountIn: quote.amountIn,
+        amountOut: quote.amountOut,
+        slippage: quote.slippage,
+        strategy: quote.strategy,
+        context: quote.context,
+        tokenIn: RebalanceTokenModel.fromTokenData(quote.tokenIn),
+        tokenOut: RebalanceTokenModel.fromTokenData(quote.tokenOut),
+      })
+    }
+  }
+
   /**
    * Checks if a swap is possible between the deficit and surplus tokens.
    * @dev swaps are possible if the deficit is compensated by the surplus of tokens in the same chain.
@@ -102,10 +138,7 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
    * @param surplusTokens
    * @private
    */
-  private async getSwapQuotes(
-    deficitToken: LiquidityManager.TokenDataAnalyzed,
-    surplusTokens: LiquidityManager.TokenDataAnalyzed[],
-  ) {
+  private async getSwapQuotes(deficitToken: TokenDataAnalyzed, surplusTokens: TokenDataAnalyzed[]) {
     const surplusTokensSameChain = surplusTokens.filter(
       (token) => token.config.chainId === deficitToken.config.chainId,
     )
@@ -120,8 +153,8 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
    * @private
    */
   private async getRebalancingQuotes(
-    deficitToken: LiquidityManager.TokenDataAnalyzed,
-    surplusTokens: LiquidityManager.TokenDataAnalyzed[],
+    deficitToken: TokenDataAnalyzed,
+    surplusTokens: TokenDataAnalyzed[],
   ) {
     const sortedSurplusTokens = getSortGroupByDiff(surplusTokens)
     const surplusTokensTotal = getGroupTotal(sortedSurplusTokens)
@@ -131,7 +164,7 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
       return []
     }
 
-    const quotes: LiquidityManager.Quote[] = []
+    const quotes: RebalanceQuote[] = []
     let currentBalance = deficitToken.analysis.balance.current
 
     for (const surplusToken of sortedSurplusTokens) {
@@ -151,11 +184,5 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     }
 
     return quotes
-  }
-
-  async executeRebalancing(rebalanceData: RebalanceJobData) {
-    for (const quote of rebalanceData.rebalance.quotes) {
-      await this.liquidityProviderManager.execute(deserialize(quote))
-    }
   }
 }

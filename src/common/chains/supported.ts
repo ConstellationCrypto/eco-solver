@@ -9,6 +9,7 @@ import { polygon } from './definitions/polygon'
 import { curtis } from './definitions/curtis'
 import { mantaSepoliaTestnet } from './definitions/mantasepolia'
 import { zerionTestnet } from './definitions/zeriontestnet'
+import { ethereum, sepolia } from './definitions/ethereum'
 
 /**
  * List of supported chains for the solver that have modified RPC URLs or are defined in the project
@@ -26,4 +27,6 @@ export const ChainsSupported: Chain[] = [
   curtis,
   mantaSepoliaTestnet,
   zerionTestnet
+  ethereum,
+  sepolia,
 ]

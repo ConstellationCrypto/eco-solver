@@ -12,12 +12,16 @@ import { ProverModule } from '../prover/prover.module'
 import { TransactionModule } from '../transaction/transaction.module'
 import { MongooseModule } from '@nestjs/mongoose'
 import { SolverModule } from '../solver/solver.module'
-//import { FlagsModule } from '../flags/flags.module'
+// import { FlagsModule } from '../flags/flags.module'
+import { ValidationService } from '@/intent/validation.sevice'
+import { FeeModule } from '@/fee/fee.module'
+
 
 @Module({
   imports: [
     BalanceModule,
-    //FlagsModule,
+    FeeModule,
+//     FlagsModule,
     MongooseModule.forFeature([{ name: IntentSourceModel.name, schema: IntentSourceSchema }]),
     ProverModule,
     SolverModule,
@@ -30,6 +34,7 @@ import { SolverModule } from '../solver/solver.module'
     FeasableIntentService,
     FulfillIntentService,
     UtilsIntentService,
+    ValidationService,
   ],
   // controllers: [IntentSourceController],
   exports: [
@@ -38,6 +43,7 @@ import { SolverModule } from '../solver/solver.module'
     FeasableIntentService,
     FulfillIntentService,
     UtilsIntentService,
+    ValidationService,
     MongooseModule, //add IntentSourceModel to the rest of the modules that import intents
   ],
 })

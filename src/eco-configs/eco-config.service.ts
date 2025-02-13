@@ -88,12 +88,17 @@ export class EcoConfigService implements OnModuleInit {
     return intents
   }
 
+  // Returns the intent source for a specific chain or undefined if its not supported
+  getIntentSource(chainID: number): IntentSource | undefined {
+    return this.getIntentSources().find((intent) => intent.chainID === chainID)
+  }
+
   // Returns the solvers config
   getSolvers(): EcoConfigType['solvers'] {
     const solvers = this.get<Record<number, Solver>>('solvers')
     entries(solvers).forEach(([, solver]: [string, Solver]) => {
       const config = getChainConfig(solver.chainID)
-      solver.solverAddress = config.Inbox
+      solver.inboxAddress = config.Inbox
       solver.targets = addressKeys(solver.targets) ?? {}
     })
     return solvers
@@ -173,5 +178,13 @@ export class EcoConfigService implements OnModuleInit {
       return [chain.id, getRpcUrl(chain, rpcApiKey).url]
     })
     return Object.fromEntries(entries) as Record<number, string>
+  }
+
+  /**
+   * Checks to see what networks we have inbox contracts for
+   * @returns the supported chains for the event
+   */
+  getSupportedChains(): bigint[] {
+    return entries(this.getSolvers()).map(([, solver]) => BigInt(solver.chainID))
   }
 }
