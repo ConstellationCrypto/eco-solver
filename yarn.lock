@@ -6156,10 +6156,10 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-permissionless@^0.2.11:
-  version "0.2.21"
-  resolved "https://registry.npmjs.org/permissionless/-/permissionless-0.2.21.tgz"
-  integrity sha512-hNrRR/I5InbqkKgRBLhXQY5R0j9biqp688ECBxsW5AO99jOv9HPjz82EdRT87OG4XkCjO4AY20hi4ZPoc+XjRg==
+permissionless@^0.2.33:
+  version "0.2.34"
+  resolved "https://registry.yarnpkg.com/permissionless/-/permissionless-0.2.34.tgz#c66ad0ece1f4f780406401355cb3415777088a91"
+  integrity sha512-N9injuAHLIJ88hKBGixYSgIUqDAnfhbCPYH+fMdx2vC0D70NtsNT+IUma0XlhQe+AmZRUSXdPyaA6Fz4Kt/aCg==
 
 picocolors@^1.0.0, picocolors@^1.1.0:
   version "1.1.1"
@@ -6755,15 +6755,6 @@ string-length@^4.0.1:
 "string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.0.0, string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.2, string-width@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
   dependencies:
     emoji-regex "^8.0.0"

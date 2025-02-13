@@ -44,15 +44,15 @@ export function getChainConfig(chainID: number | string): EcoChainConfig {
   if (id === "33111-pre") {
     return {
       // Prover: "0xac3f4357d650109a94c4a977f6c327b140cbac37";
-      IntentSource: "0xD7f316e387107b90dFBBDCb07bEC7280A729ce88",
-      Inbox: "0x04fA0CeB5eaAf33084DDd4A7cda74F01767B4507",
-      HyperProver: "0x3e27B444B5E543cbFF449115DE4a36705a891F82",
+      IntentSource: "0x9Dae29Dd5C877979CC5eF930DEFf39AeD44C4C32",
+      Inbox: "0xaF979B11477d202F9c9E5f077961305b80D175Aa",
+      HyperProver: "0x64Ac4bb878926e308abc9dc7B927eac8293cc85c",
     };
   } else if (id === "3441006-pre") {
     return {
-      IntentSource: "0x7e0400Eb1508f4c8A2C33a46c7Ce308C650ccDe6",
-      Inbox: "0xC8CFd1aA8153Ec5F41d8F6FBCf8ec4B1AD8b779c",
-      HyperProver: "0x7d89991BFF4B2665f7Ace724789Cf2ACBBF46A39", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
+      IntentSource: "0x9Dae29Dd5C877979CC5eF930DEFf39AeD44C4C32",
+      Inbox: "0xaF979B11477d202F9c9E5f077961305b80D175Aa",
+      HyperProver: "0x3925016CD0508006e081Ae5d9be2e83503398672", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
     };
   }
   const config = EcoProtocolAddresses[id]
