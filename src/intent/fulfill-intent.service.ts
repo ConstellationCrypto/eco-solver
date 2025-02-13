@@ -252,7 +252,7 @@ export class FulfillIntentService {
         args.push(zeroAddress)
       }
     } else if (isMetalayer) {
-      args.push(model.intent.prover)
+      args.push(model.intent.reward.prover)
       args.push([]) // Empty reads array for now - can be enhanced later if needed
     }
     let fee = 0n
