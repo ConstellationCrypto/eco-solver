@@ -24,7 +24,7 @@ import { FeeModule } from '@/fee/fee.module'
     ApiModule,
     BalanceModule,
     ChainMonitorModule,
-//     EcoConfigModule.withAWS(),
+    EcoConfigModule.withAWS(),
 //     FlagsModule,
     HealthModule,
     IntentModule,
