@@ -26,7 +26,7 @@ export const ChainsSupported: Chain[] = [
   polygon,
   curtis,
   mantaSepoliaTestnet,
-  zerionTestnet
+  zerionTestnet,
   ethereum,
   sepolia,
 ]
