@@ -11,7 +11,7 @@ import { ProverModule } from './prover/prover.module'
 import { HealthModule } from './health/health.module'
 import { ProcessorModule } from './bullmq/processors/processor.module'
 import { SolverModule } from './solver/solver.module'
-import { FlagsModule } from './flags/flags.module'
+//import { FlagsModule } from './flags/flags.module'
 import { LiquidityManagerModule } from '@/liquidity-manager/liquidity-manager.module'
 import { ApiModule } from '@/api/api.module'
 import { WatchModule } from '@/watch/watch.module'
@@ -25,8 +25,7 @@ import { FeeModule } from '@/fee/fee.module'
     BalanceModule,
     ChainMonitorModule,
     EcoConfigModule.withAWS(),
-    FeeModule,
-    FlagsModule,
+//     FlagsModule,
     HealthModule,
     IntentModule,
     SignModule,

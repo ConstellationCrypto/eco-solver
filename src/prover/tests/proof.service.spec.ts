@@ -2,7 +2,7 @@ import { createMock, DeepMocked } from '@golevelup/ts-jest'
 import { EcoConfigService } from '../../eco-configs/eco-config.service'
 import { Test, TestingModule } from '@nestjs/testing'
 import { ProofService } from '../../prover/proof.service'
-import { PROOF_HYPERLANE, PROOF_STORAGE, ProofType } from '../../contracts'
+import { PROOF_HYPERLANE, PROOF_STORAGE, PROOF_METALAYER, ProofType } from '../../contracts'
 import { Hex } from 'viem'
 import { MultichainPublicClientService } from '../../transaction/multichain-public-client.service'
 import { addSeconds } from 'date-fns'
@@ -109,26 +109,38 @@ describe('ProofService', () => {
     })
   })
 
-  describe('on utility methods', () => {
+  describe('on proof type checks', () => {
     const intentConfigs = {
       proofs: {
         storage_duration_seconds: 10,
         hyperlane_duration_seconds: 20,
+        metalayer_duration_seconds: 30,
       },
     }
+
     beforeEach(async () => {
       ecoConfigService.getIntentConfigs = jest.fn().mockReturnValue(intentConfigs)
     })
+
     it('should correctly check if its a hyperlane prover', async () => {
       jest.spyOn(proofService, 'getProofType').mockReturnValue(PROOF_HYPERLANE)
       expect(proofService.isHyperlaneProver('0x123')).toBe(true)
       expect(proofService.isStorageProver('0x123')).toBe(false)
+      expect(proofService.isMetalayerProver('0x123')).toBe(false)
     })
 
     it('should correctly check if its a storage prover', async () => {
       jest.spyOn(proofService, 'getProofType').mockReturnValue(PROOF_STORAGE)
       expect(proofService.isHyperlaneProver('0x123')).toBe(false)
       expect(proofService.isStorageProver('0x123')).toBe(true)
+      expect(proofService.isMetalayerProver('0x123')).toBe(false)
+    })
+
+    it('should correctly check if its a metalayer prover', async () => {
+      jest.spyOn(proofService, 'getProofType').mockReturnValue(PROOF_METALAYER)
+      expect(proofService.isHyperlaneProver('0x123')).toBe(false)
+      expect(proofService.isStorageProver('0x123')).toBe(false)
+      expect(proofService.isMetalayerProver('0x123')).toBe(true)
     })
 
     it('should return the correct minimum proof time', async () => {
@@ -138,6 +150,10 @@ describe('ProofService', () => {
 
       expect(proofService['getProofMinimumDurationSeconds'](PROOF_STORAGE)).toBe(
         intentConfigs.proofs.storage_duration_seconds,
+      )
+
+      expect(proofService['getProofMinimumDurationSeconds'](PROOF_METALAYER)).toBe(
+        intentConfigs.proofs.metalayer_duration_seconds,
       )
     })
 

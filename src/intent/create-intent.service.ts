@@ -12,7 +12,7 @@ import { Hex } from 'viem'
 import { ValidSmartWalletService } from '../solver/filters/valid-smart-wallet.service'
 import { decodeCreateIntentLog, IntentCreatedLog } from '../contracts'
 import { IntentDataModel } from './schemas/intent-data.schema'
-import { FlagService } from '../flags/flags.service'
+// import { FlagService } from '../flags/flags.service'
 import { deserialize, Serialize } from '@/liquidity-manager/utils/serialize'
 
 /**
@@ -29,7 +29,7 @@ export class CreateIntentService implements OnModuleInit {
     @InjectQueue(QUEUES.SOURCE_INTENT.queue) private readonly intentQueue: Queue,
     @InjectModel(IntentSourceModel.name) private intentModel: Model<IntentSourceModel>,
     private readonly validSmartWalletService: ValidSmartWalletService,
-    private readonly flagService: FlagService,
+    //private readonly flagService: FlagService,
     private readonly ecoConfigService: EcoConfigService,
   ) {}
 
@@ -79,7 +79,7 @@ export class CreateIntentService implements OnModuleInit {
         return
       }
 
-      const validWallet = this.flagService.getFlagValue('bendWalletOnly')
+      const validWallet = false //this.flagService.getFlagValue('bendWalletOnly')
         ? await this.validSmartWalletService.validateSmartWallet(
             intent.reward.creator as Hex,
             intentWs.sourceChainID,
