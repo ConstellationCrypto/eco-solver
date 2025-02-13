@@ -1,12 +1,18 @@
 import {
+  Account,
+  Chain,
   createPublicClient,
   createWalletClient,
   decodeFunctionData,
   decodeFunctionResult,
   encodeFunctionData,
   Hex,
+  LocalAccount,
+  OneOf,
   parseAbi,
   publicActions,
+  Transport,
+  WalletClient,
   zeroAddress,
 } from 'viem'
 import { KernelAccountClientConfig } from './kernel-account.config'
@@ -15,14 +21,18 @@ import {
   KernelAccountActions,
   KernelAccountClient,
 } from './kernel-account.client'
+import { EthereumProvider } from 'permissionless/utils/toOwner'
 import { KernelVersion, toEcdsaKernelSmartAccount } from 'permissionless/accounts'
 
 export type entryPointV_0_7 = '0.7'
 
 export async function createKernelAccountClient<
   entryPointVersion extends '0.6' | '0.7' = entryPointV_0_7,
+  owner extends OneOf<
+    EthereumProvider | WalletClient<Transport, Chain | undefined, Account> | LocalAccount
+  > = LocalAccount,
 >(
-  parameters: KernelAccountClientConfig<entryPointVersion, KernelVersion<entryPointVersion>>,
+  parameters: KernelAccountClientConfig<entryPointVersion, KernelVersion<entryPointVersion>, owner>,
 ): Promise<{ client: KernelAccountClient<entryPointVersion>; args: DeployFactoryArgs }> {
   const { key = 'kernelAccountClient', name = 'Kernel Account Client', transport } = parameters
   const { account } = parameters
@@ -37,7 +47,8 @@ export async function createKernelAccountClient<
 
   const kernelAccount = await toEcdsaKernelSmartAccount<
     entryPointVersion,
-    KernelVersion<entryPointVersion>
+    KernelVersion<entryPointVersion>,
+    owner
   >({
     ...parameters,
     client,
@@ -64,6 +75,10 @@ export async function createKernelAccountClient<
         'function getAddress(bytes calldata data, bytes32 salt) view returns (address)',
       ])
 
+      console.log("factorY: ", factory)
+      //console.log(publicClient)
+      console.log(publicClient.chain)
+
       const { data } = await publicClient.call({
         to: factory,
         data: encodeFunctionData({
@@ -72,6 +87,8 @@ export async function createKernelAccountClient<
           args: [createdData, salt],
         }),
       })
+
+      console.log('Factory call response data:', data)  // Add this line
 
       const address = decodeFunctionResult({
         abi: KernelFactoryABI,

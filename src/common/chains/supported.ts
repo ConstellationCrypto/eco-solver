@@ -6,6 +6,9 @@ import { base, baseSepolia } from './definitions/base'
 import { arbitrum } from './definitions/arbitrum'
 import { mantle } from './definitions/mantle'
 import { polygon } from './definitions/polygon'
+import { curtis } from './definitions/curtis'
+import { mantaSepoliaTestnet } from './definitions/mantasepolia'
+import { zerionTestnet } from './definitions/zeriontestnet'
 import { ethereum, sepolia } from './definitions/ethereum'
 
 /**
@@ -21,6 +24,9 @@ export const ChainsSupported: Chain[] = [
   arbitrum,
   mantle,
   polygon,
+  curtis,
+  mantaSepoliaTestnet,
+  zerionTestnet,
   ethereum,
   sepolia,
 ]

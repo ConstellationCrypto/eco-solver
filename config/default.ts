@@ -1,11 +1,11 @@
 export default {
   aws: [
     {
-      region: 'us-east-2',
+      region: 'us-west-2',
       secretID: 'eco-solver-secrets-dev',
     },
     {
-      region: 'us-east-2',
+      region: 'us-west-2',
       secretID: 'eco-solver-configs-dev',
     },
   ],
@@ -82,6 +82,7 @@ export default {
     proofs: {
       storage_duration_seconds: 604800,
       hyperlane_duration_seconds: 3600,
+      metalayer_duration_seconds: 3600,
     },
   },
   liquidityManager: {
@@ -91,6 +92,9 @@ export default {
       surplus: 0.1,
       deficit: 0.2,
     },
+  },
+  fulfillment: {
+    run: 'single',
   },
   externalAPIs: {},
   logger: {

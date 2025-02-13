@@ -28,68 +28,87 @@ export default {
       },
     },
   },
+  /*
+  if (id === "33111-pre") {
+    return {
+      // Prover: "0xac3f4357d650109a94c4a977f6c327b140cbac37";
+      IntentSource: "0xD7f316e387107b90dFBBDCb07bEC7280A729ce88",
+      Inbox: "0x04fA0CeB5eaAf33084DDd4A7cda74F01767B4507",
+      HyperProver: "0x3e27B444B5E543cbFF449115DE4a36705a891F82",
+    };
+  } else if (id === "3441006-pre") {
+    return {
+      IntentSource: "0x7e0400Eb1508f4c8A2C33a46c7Ce308C650ccDe6",
+      Inbox: "0xC8CFd1aA8153Ec5F41d8F6FBCf8ec4B1AD8b779c",
+      HyperProver: "0x7d89991BFF4B2665f7Ace724789Cf2ACBBF46A39", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
+    };
+  }
+  */
   intentSources: [
     {
-      network: 'opt-sepolia',
-      chainID: 11155420,
+      network: 'Curtis',
+      chainID: 33111,
       tokens: [
-        '0x5fd84259d66Cd46123540766Be93DFE6D43130D7', //usdc
-        '0x8327Db9040811545C13331A453aBe9C7AA1aCDf8',
-        '0x368d7C52B0F62228907C133204605a5B11A1dB6d',
-        '0x00D2d1162c689179e8bA7a3b936f80A010A0b5CF',
-        '0x3328C29843F7c7dfF7381aF54A03C7423431Eaa4',
-        '0xd3F4Bef596a04e2be4fbeB17Dd70f02F717c5a6c',
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a',
+        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78', //usdc
+        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77', //usdt
       ],
-      provers: ['0x9592E6bA1Cec5d85D0EeF477703814857acFa921'],
+      provers: ['0x3e27B444B5E543cbFF449115DE4a36705a891F82'],
     },
     {
-      network: 'base-sepolia',
-      chainID: 84532,
+      network: 'manta-sepolia',
+      chainID: 3441006,
       tokens: [
-        '0xAb1D243b07e99C91dE9E4B80DFc2B07a8332A2f7', //usdc
-        '0x8bDa9F5C33FBCB04Ea176ea5Bc1f5102e934257f',
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a',
+        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c', //usdc
+        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F', //usdt
       ],
-      provers: ['0x9592E6bA1Cec5d85D0EeF477703814857acFa921'],
+      provers: ['0x7d89991BFF4B2665f7Ace724789Cf2ACBBF46A39'],
     },
   ],
   solvers: {
-    //base sepolia
-    84532: {
+    33111: {
+      solverAddress: '0x04fA0CeB5eaAf33084DDd4A7cda74F01767B4507',
       targets: {
-        //base sepolia USDC
-        '0xAb1D243b07e99C91dE9E4B80DFc2B07a8332A2f7': {
+        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
+          targetBalance: 20000,
         },
-        '0x8bDa9F5C33FBCB04Ea176ea5Bc1f5102e934257f': {
+        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
-        },
-        '0x93551e3F61F8E3EE73DDc096BddbC1ADc52f5A3a': {
-          contractType: 'erc20',
-          selectors: ['transfer(address,uint256)'],
-          minBalance: 1000,
+          targetBalance: 20000,
         },
       },
-      network: 'base-sepolia',
-      chainID: 84532,
+      network: 'Curtis',
+      chainID: 33111,
     },
-    //op sepolia
-    11155420: {
+    3441006: {
+      solverAddress: '0xC8CFd1aA8153Ec5F41d8F6FBCf8ec4B1AD8b779c',
       targets: {
-        //op sepolia USDC
-        '0x5fd84259d66Cd46123540766Be93DFE6D43130D7': {
+        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
+          targetBalance: 20000,
+        },
+        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+          targetBalance: 20000,
         },
       },
-      network: 'opt-sepolia',
-      chainID: 11155420,
+      network: 'manta-sepolia',
+      chainID: 3441006,
+    },
+  },
+  intentConfigs: {
+    proofs: {
+      storage_duration_seconds: 60,
+      hyperlane_duration_seconds: 120,
+      metalayer_duration_seconds: 180,
     },
   },
 }

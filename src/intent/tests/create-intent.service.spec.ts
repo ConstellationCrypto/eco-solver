@@ -11,7 +11,7 @@ import { Queue } from 'bullmq'
 import { CreateIntentService } from '../create-intent.service'
 import { ValidSmartWalletService } from '../../solver/filters/valid-smart-wallet.service'
 import { IntentDataModel } from '../schemas/intent-data.schema'
-import { FlagService } from '../../flags/flags.service'
+// import { FlagService } from '../../flags/flags.service'
 
 jest.mock('../../contracts', () => {
   return {
@@ -35,7 +35,7 @@ describe('CreateIntentService', () => {
       providers: [
         CreateIntentService,
         { provide: ValidSmartWalletService, useValue: createMock<ValidSmartWalletService>() },
-        { provide: FlagService, useValue: createMock<FlagService>() },
+        //{ provide: FlagService, useValue: createMock<FlagService>() },
         { provide: EcoConfigService, useValue: createMock<EcoConfigService>() },
         {
           provide: getModelToken(IntentSourceModel.name),
@@ -56,7 +56,7 @@ describe('CreateIntentService', () => {
 
     createIntentService = chainMod.get(CreateIntentService)
     validSmartWalletService = chainMod.get(ValidSmartWalletService)
-    flagService = chainMod.get(FlagService)
+    //flagService = chainMod.get(FlagService)
     ecoConfigService = chainMod.get(EcoConfigService)
     intentSourceModel = chainMod.get(getModelToken(IntentSourceModel.name))
     queue = chainMod.get(getQueueToken(QUEUES.SOURCE_INTENT.queue))
@@ -117,7 +117,7 @@ describe('CreateIntentService', () => {
     it('should check if the bendWalletOnly flag is up', async () => {
       const mockFindOne = jest.fn().mockReturnValue(undefined)
       intentSourceModel.findOne = mockFindOne
-      const mockFlag = jest.spyOn(flagService, 'getFlagValue').mockReturnValue(false)
+      //const mockFlag = jest.spyOn(flagService, 'getFlagValue').mockReturnValue(false)
       const mockValidateSmartWallet = jest.fn().mockReturnValue(true)
       validSmartWalletService.validateSmartWallet = mockValidateSmartWallet
       await createIntentService.createIntent(mockEvent as any)
@@ -129,7 +129,7 @@ describe('CreateIntentService', () => {
       const mockFindOne = jest.fn().mockReturnValue(undefined)
       intentSourceModel.findOne = mockFindOne
       const mockValidateSmartWallet = jest.fn().mockReturnValue(true)
-      jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
+      //jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
       validSmartWalletService.validateSmartWallet = mockValidateSmartWallet
       await createIntentService.createIntent(mockEvent as any)
       expect(mockValidateSmartWallet).toHaveBeenCalledTimes(1)
@@ -143,7 +143,7 @@ describe('CreateIntentService', () => {
       const mockFindOne = jest.fn().mockReturnValue(undefined)
       intentSourceModel.findOne = mockFindOne
       const mockValidateSmartWallet = jest.fn().mockReturnValue(true)
-      jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
+      //jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
       validSmartWalletService.validateSmartWallet = mockValidateSmartWallet
       const mockCreate = jest.fn()
       intentSourceModel.create = mockCreate
@@ -172,7 +172,7 @@ describe('CreateIntentService', () => {
       intentSourceModel.findOne = mockFindOne
       intentSourceModel.create = jest.fn().mockReturnValue({ intent: mockIntent })
       queue.add = mockQueueAdd
-      jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
+      //jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
       validSmartWalletService.validateSmartWallet = jest.fn().mockReturnValue(false)
 
       await createIntentService.createIntent(mockEvent as any)
@@ -191,7 +191,7 @@ describe('CreateIntentService', () => {
       intentSourceModel.findOne = mockFindOne
       intentSourceModel.create = jest.fn().mockReturnValue({ intent: mockIntent })
       queue.add = mockQueueAdd
-      jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
+      //jest.spyOn(flagService, 'getFlagValue').mockReturnValue(true)
       validSmartWalletService.validateSmartWallet = jest.fn().mockReturnValue(true)
 
       const jobId = `create-${mockIntent.hash}-${mockIntent.logIndex}`

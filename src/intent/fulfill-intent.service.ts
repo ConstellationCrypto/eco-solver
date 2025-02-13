@@ -28,7 +28,8 @@ import { getTransactionTargetData } from '@/intent/utils'
 import { FeeService } from '@/fee/fee.service'
 import { IntentDataModel } from '@/intent/schemas/intent-data.schema'
 
-type FulfillmentMethod = ContractFunctionName<typeof InboxAbi>
+// TODO: Remove this once the updated routes-ts package is published
+type FulfillmentMethod = ContractFunctionName<typeof InboxAbi> | 'fulfillMetalayerInstant'
 
 /**
  * This class fulfills an intent by creating the transactions for the intent targets and the fulfill intent transaction.
@@ -225,10 +226,14 @@ export class FulfillIntentService {
   ): Promise<ExecuteSmartWalletArg> {
     const claimant = this.ecoConfigService.getEth().claimant
     const isHyperlane = this.proofService.isHyperlaneProver(model.intent.reward.prover)
+    const isMetalayer = this.proofService.isMetalayerProver(model.intent.reward.prover)
     const functionName: FulfillmentMethod = this.proofService.isStorageProver(
       model.intent.reward.prover,
     )
+
       ? 'fulfillStorage'
+      : isMetalayer
+      ? 'fulfillMetalayerInstant'
       : this.getFulfillment()
 
     const args = [
@@ -246,14 +251,22 @@ export class FulfillIntentService {
         args.push('0x0')
         args.push(zeroAddress)
       }
+    } else if (isMetalayer) {
+      args.push(model.intent.reward.prover)
+      args.push([]) // Empty reads array for now - can be enhanced later if needed
     }
     let fee = 0n
     if (isHyperlane && functionName === 'fulfillHyperInstantWithRelayer') {
       fee = BigInt((await this.getHyperlaneFee(inboxAddress, model)) || '0x0')
     }
+    // TODO: Add Metalayer fee support once available
+    // if (isMetalayer) {
+    //   fee = await this.getMetalayerFee(solverAddress, model)
+    // }
 
     const fulfillIntentData = encodeFunctionData({
       abi: InboxAbi,
+      // @ts-expect-error temporary hack to amend the upstream types - can be removed once the updated routes-ts package is published
       functionName,
       // @ts-expect-error we dynamically set the args
       args,
