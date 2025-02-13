@@ -64,6 +64,10 @@ export async function createKernelAccountClient<
         'function getAddress(bytes calldata data, bytes32 salt) view returns (address)',
       ])
 
+      console.log("factorY: ", factory)
+      //console.log(publicClient)
+      console.log(publicClient.chain)
+
       const { data } = await publicClient.call({
         to: factory,
         data: encodeFunctionData({
@@ -72,6 +76,8 @@ export async function createKernelAccountClient<
           args: [createdData, salt],
         }),
       })
+
+      console.log('Factory call response data:', data)  // Add this line
 
       const address = decodeFunctionResult({
         abi: KernelFactoryABI,
