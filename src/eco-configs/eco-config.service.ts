@@ -78,7 +78,7 @@ export class EcoConfigService implements OnModuleInit {
       })
       const config = getChainConfig(intent.chainID)
       intent.sourceAddress = config.IntentSource
-      intent.provers = [config.HyperProver]
+      //intent.provers = [config.HyperProver]
       //removing storage prover per audit for hyperlane beta release
       // if (config.Prover) {
       //   intent.provers.push(config.Prover)

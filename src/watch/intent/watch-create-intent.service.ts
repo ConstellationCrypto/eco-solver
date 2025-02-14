@@ -60,6 +60,7 @@ export class WatchCreateIntentService extends WatchEventService<IntentSource> {
         },
       }),
     )
+    console.log(source.provers)
     this.unwatch[source.chainID] = client.watchContractEvent({
       onError: async (error) => {
         await this.onError(error, client, source)
