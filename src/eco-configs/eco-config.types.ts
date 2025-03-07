@@ -46,6 +46,7 @@ export type EcoConfigType = {
   }
   fulfill: FulfillType
   aws: AwsCredential[]
+  kms: KmsConfig
   database: {
     auth: MongoAuthType
     uriPrefix: string
@@ -119,6 +120,9 @@ export type IntervalConfig = {
  * The config type for the intent section
  */
 export type IntentConfig = {
+  //the maximum amount of tokens that can be filled in a single transaction,
+  //defaults to 1000 USDC decimal 6 equivalent {@link ValidationService.DEFAULT_MAX_FILL}
+  maxFill: bigint
   proofs: {
     storage_duration_seconds: number
     hyperlane_duration_seconds: number
@@ -132,6 +136,14 @@ export type IntentConfig = {
 export type AwsCredential = {
   region: string
   secretID: string
+}
+
+/**
+ * The config type for the aws kms
+ */
+export type KmsConfig = {
+  region: string
+  keyID: string
 }
 
 /**

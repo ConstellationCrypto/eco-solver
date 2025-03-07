@@ -3,9 +3,8 @@ FROM node:20
 WORKDIR /usr/src/app
 COPY . .
 
-RUN yarn install
-RUN yarn build
+RUN npm install --legacy-peer-deps
 
 EXPOSE 3000
 
-ENTRYPOINT [ "yarn", "start" ]
+ENTRYPOINT ["npm", "run", "start:dev"]
