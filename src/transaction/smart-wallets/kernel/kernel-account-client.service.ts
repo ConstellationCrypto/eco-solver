@@ -18,7 +18,8 @@ import { createKernelAccountClient, entryPointV_0_7 } from './create.kernel.acco
 import { KernelAccountClient } from './kernel-account.client'
 import { EthereumProvider } from 'permissionless/utils/toOwner'
 import { EcoLogMessage } from '../../../common/logging/eco-log-message'
-import { SignerKmsService } from '@/sign/signer-kms.service'
+// import { SignerKmsService } from '@/sign/signer-kms.service'
+import { SignerService } from '@/sign/signer.service'
 
 @Injectable()
 export class KernelAccountClientServiceBase<
@@ -35,7 +36,7 @@ export class KernelAccountClientServiceBase<
 
   constructor(
     readonly ecoConfigService: EcoConfigService,
-    private readonly signerService: SignerKmsService,
+    private readonly signerService: SignerService,
   ) {
     super(ecoConfigService)
   }
@@ -95,7 +96,7 @@ export class KernelAccountClientService extends KernelAccountClientServiceBase<
   KernelVersion<entryPointV_0_7>,
   LocalAccount
 > {
-  constructor(ecoConfigService: EcoConfigService, signerService: SignerKmsService) {
+  constructor(ecoConfigService: EcoConfigService, signerService: SignerService) {
     super(ecoConfigService, signerService)
   }
 }

@@ -6,8 +6,9 @@ export const mantaSepoliaTestnet: Chain = {
   rpcUrls: {
     //...vmantaSepoliaTestnet.rpcUrls,
     default: {
-      http: ['https://manta-sepolia.rpc.caldera.xyz/http'],
+      http: [
+        'http://pacific-rpc.sepolia-testnet.manta.network/48305c86-958c-4f37-b9c1-463dc2f80308',
+      ],
     },
   },
-  
 }
