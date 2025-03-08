@@ -7,6 +7,18 @@ if [[ "$1" != "dev" && "$1" != "prod" ]]; then
     exit 1
 fi
 
+if [[ -z "$2" ]]; then
+    if [[ "$1" == "prod" ]]; then
+        echo "Error: Second argument is not provided"
+        echo "Usage: $0 prod <tag>"
+        exit 1
+    else
+        TAG="latest"
+    fi
+else
+    TAG="$2"
+fi
+
 # Set account based on environment
 if [[ "$1" == "dev" ]]; then
     ACCOUNT="371717752603"  # sandbox account
@@ -37,6 +49,14 @@ echo "Building ${image_name} using ${dockerfile}..."
 docker build "${build_context}" -f "${dockerfile}" \
     -t "${ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com/${image_name}:latest" \
     ${platform:+"$platform=$platformarg"}
+
+# Tag with git tag if available
+if [[ "${TAG}" != "latest" ]]; then
+    docker tag "${ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com/${image_name}:latest" \
+        "${ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com/${image_name}:${TAG}"
+    docker push "${ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com/${image_name}:${TAG}"
+fi
+
 
 # Push latest tag
 docker push "${ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com/${image_name}:latest"
