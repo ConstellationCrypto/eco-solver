@@ -72,6 +72,15 @@ export default {
       ],
       provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0x907fE7e7B3a42f6ef447A401224F2927921FEA12', ],
     },
+    {
+      network: 'b3-testnet',
+      chainID: 1993,
+      tokens: [
+        '0x100E080d2Dea6d46D00454b373a5b08909eD9306', //usdc
+        '0xa79fab0465E33c98330Bf053260e0a2F158725c4', //usdt
+      ],
+      provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0xDD48D9629BfB2E02B3113775D1c035bF3045a063', ],
+    },
   ],
   solvers: {
     33111: {
@@ -125,6 +134,32 @@ export default {
           per100UnitFee: 0
         }
       }
+    },
+    1993: {
+      solverAddress: '0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e',
+      targets: {
+        '0x100E080d2Dea6d46D00454b373a5b08909eD9306': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+          targetBalance: 20000,
+        },
+        '0xa79fab0465E33c98330Bf053260e0a2F158725c4': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+          targetBalance: 20000,
+        },
+      },
+      network: 'b3-testnet',
+      chainID: 1993,
+      fee: {
+        feeAlgorithm: 'linear',
+        constants: {
+          baseFee: 0,
+          per100UnitFee: 0,
+        },
+      },
     },
   },
   intentConfigs: {

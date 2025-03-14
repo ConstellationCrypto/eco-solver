@@ -56,6 +56,13 @@ export function getChainConfig(chainID: number | string): EcoChainConfig {
       HyperProver: "0x907fE7e7B3a42f6ef447A401224F2927921FEA12", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
       //MetalayerProver: "0xC4d6985b9b333F333F78e4Cae5563BB009595A6C",
     };
+  } else if (id === "1993-pre") {
+    return {
+      IntentSource: "0x587FF7656A0Da8b17Ff861caD7B8DFAB51c113f8",
+      Inbox: "0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e",
+      HyperProver: "0xDD48D9629BfB2E02B3113775D1c035bF3045a063", // this is the metalayerprover: "0xCd906dD3b534a7ab400F510f4F951ca07357a7Bc",
+      //MetalayerProver: "0xC4d6985b9b333F333F78e4Cae5563BB009595A6C",
+    };
   }
   const config = EcoProtocolAddresses[id]
   if (config === undefined) {

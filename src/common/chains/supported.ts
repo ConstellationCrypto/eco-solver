@@ -10,6 +10,7 @@ import { curtis } from './definitions/curtis'
 import { mantaSepoliaTestnet } from './definitions/mantasepolia'
 import { zerionTestnet } from './definitions/zeriontestnet'
 import { ethereum, sepolia } from './definitions/ethereum'
+import { b3Testnet } from './definitions/b3testnet'
 
 /**
  * List of supported chains for the solver that have modified RPC URLs or are defined in the project
@@ -19,6 +20,7 @@ export const ChainsSupported: Chain[] = [
   optimismSepolia,
   base,
   baseSepolia,
+  b3Testnet,
   ecoSepolia,
   helix,
   arbitrum,
