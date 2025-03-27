@@ -58,8 +58,8 @@ export default {
       network: 'Curtis',
       chainID: 33111,
       tokens: [
-        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78', //usdc
-        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77', //usdt
+        '0xE0356B8aD7811dC3e4d61cFD6ac7653e0D31b096', //usdc
+        '0xb56415964d3F47fd3390484676e4f394d198374a', //usdt
       ],
       provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0xEADCeB003Cde57B7F0025baF2A1C29efaB497D53', ],
     },
@@ -67,8 +67,8 @@ export default {
       network: 'manta-sepolia',
       chainID: 3441006,
       tokens: [
-        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c', //usdc
-        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F', //usdt
+        '0x0652aEc2DeE0Fee9D05E614c95Ce8A01a7336cD8', //usdc
+        '0xC040bB09ffF7EBb7FDf38831B7c582afddB2CcFE', //usdt
       ],
       provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0x907fE7e7B3a42f6ef447A401224F2927921FEA12', ],
     },
@@ -76,8 +76,8 @@ export default {
       network: 'b3-testnet',
       chainID: 1993,
       tokens: [
-        '0x100E080d2Dea6d46D00454b373a5b08909eD9306', //usdc
-        '0xa79fab0465E33c98330Bf053260e0a2F158725c4', //usdt
+        '0x72EC0cAC893bB5C34b39EE775dD0E6fefa8A8345', //usdc
+        '0xA615b3A30F794100f226966251012c45EAb48e17', //usdt
       ],
       provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0xDD48D9629BfB2E02B3113775D1c035bF3045a063', ],
     },
@@ -86,13 +86,13 @@ export default {
     33111: {
       solverAddress: '0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e',  
       targets: {
-        '0x804AAA73AA2732B2f84bB5E768Dc50003F0b3f78': {
+        '0xE0356B8aD7811dC3e4d61cFD6ac7653e0D31b096': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
           targetBalance: 20000,
         },
-        '0x8Cb9a6A8692D3379F237CDE946B69888462D3c77': {
+        '0xb56415964d3F47fd3390484676e4f394d198374a': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
@@ -112,13 +112,13 @@ export default {
     3441006: {
       solverAddress: '0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e',
       targets: {
-        '0x6E4D0AEC0fd8081E1Fd1f17B9769600efC72B51c': {
+        '0x0652aEc2DeE0Fee9D05E614c95Ce8A01a7336cD8': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
           targetBalance: 20000,
         },
-        '0x1a8Eff33abcB8E7754daeA05582F4f7c93a9c75F': {
+        '0xC040bB09ffF7EBb7FDf38831B7c582afddB2CcFE': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
@@ -138,13 +138,13 @@ export default {
     1993: {
       solverAddress: '0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e',
       targets: {
-        '0x100E080d2Dea6d46D00454b373a5b08909eD9306': {
+        '0x72EC0cAC893bB5C34b39EE775dD0E6fefa8A8345': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
           targetBalance: 20000,
         },
-        '0xa79fab0465E33c98330Bf053260e0a2F158725c4': {
+        '0xA615b3A30F794100f226966251012c45EAb48e17': {
           contractType: 'erc20',
           selectors: ['transfer(address,uint256)'],
           minBalance: 1000,
