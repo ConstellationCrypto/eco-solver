@@ -81,6 +81,15 @@ export default {
       ],
       provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0xDD48D9629BfB2E02B3113775D1c035bF3045a063', ],
     },
+    {
+      network: 'base-sepolia',
+      chainID: 84532,
+      tokens: [
+        '0xcE90A1FCF07d8F9048CC361846f59F379175A89c', //usdc
+        '0x93Ff978322BD76eCE681C32D69A9643511a03FfF', //usdt
+      ],
+      provers: ['0xC4d6985b9b333F333F78e4Cae5563BB009595A6C', '0x037Cc07139CB979F768c164E8Ca89a1cFB70cfb1', ],
+    },
   ],
   solvers: {
     33111: {
@@ -153,6 +162,32 @@ export default {
       },
       network: 'b3-testnet',
       chainID: 1993,
+      fee: {
+        feeAlgorithm: 'linear',
+        constants: {
+          baseFee: 0,
+          per100UnitFee: 0,
+        },
+      },
+    },
+    84532: {
+      solverAddress: '0x578CCAd6a274fDE97c09D439e1E94D4FcE33328e',
+      targets: {
+        '0xcE90A1FCF07d8F9048CC361846f59F379175A89c': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+          targetBalance: 20000,
+        },
+        '0x93Ff978322BD76eCE681C32D69A9643511a03FfF': {
+          contractType: 'erc20',
+          selectors: ['transfer(address,uint256)'],
+          minBalance: 1000,
+          targetBalance: 20000,
+        },
+      },
+      network: 'base-sepolia',
+      chainID: 84532,
       fee: {
         feeAlgorithm: 'linear',
         constants: {
