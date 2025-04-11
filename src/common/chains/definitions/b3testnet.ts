@@ -5,7 +5,7 @@ export const b3Testnet: Chain = {
   ...b3Sepolia,
   rpcUrls: {
     default: {
-      http: ['https://b3-testnet.rpc.caldera.xyz/http'],
+      http: ['https://b3-testnet.rpc.caldera.xyz/25985cd3-b09d-44c7-8990-6351c476a789'],
     },
   },
   contracts: {

@@ -6,7 +6,7 @@ export const curtis: Chain = {
   rpcUrls: {
     //...vcurtis.rpcUrls,
     default: {
-      http: ['https://curtis.rpc.caldera.xyz/direct-http-01'],
+      http: ['https://curtis.rpc.caldera.xyz/1cfc5cfb-2338-63e1-c188-830bca3f3b83'],
     },
   },
   contracts: {
