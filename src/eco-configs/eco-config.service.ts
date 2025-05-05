@@ -121,9 +121,9 @@ export class EcoConfigService implements OnModuleInit {
   }
 
   // Get the launch darkly configs
-  // getLaunchDarkly(): EcoConfigType['launchDarkly'] {
-  //   return this.get('launchDarkly')
-  // }
+  getLaunchDarkly(): EcoConfigType['launchDarkly'] {
+    return this.get('launchDarkly')
+  }
 
   getDatabaseConfig(): EcoConfigType['database'] {
     return this.get('database')

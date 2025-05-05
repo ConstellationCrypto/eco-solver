@@ -12,7 +12,7 @@ import { ProverModule } from '../prover/prover.module'
 import { TransactionModule } from '../transaction/transaction.module'
 import { MongooseModule } from '@nestjs/mongoose'
 import { SolverModule } from '../solver/solver.module'
-// import { FlagsModule } from '../flags/flags.module'
+import { FlagsModule } from '../flags/flags.module'
 import { ValidationService } from '@/intent/validation.sevice'
 import { FeeModule } from '@/fee/fee.module'
 
@@ -20,7 +20,7 @@ import { FeeModule } from '@/fee/fee.module'
   imports: [
     BalanceModule,
     FeeModule,
-    //     FlagsModule,
+    FlagsModule,
     MongooseModule.forFeature([{ name: IntentSourceModel.name, schema: IntentSourceSchema }]),
     ProverModule,
     SolverModule,
