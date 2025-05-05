@@ -133,7 +133,7 @@ export class ProofService implements OnModuleInit {
    */
   private async getProofTypes(chainID: number, provers: Hex[]): Promise<Record<Hex, ProofType>> {
     const client = await this.publicClient.getClient(Number(chainID))
-    console.log("CHECKING PROVERS ", provers)
+    console.log('CHECKING PROVERS ', provers)
     const proofCalls: ProofCall[] = provers.map((proverAddress) => {
       return {
         address: proverAddress,
@@ -153,7 +153,7 @@ export class ProofService implements OnModuleInit {
     //   proofObj[provers[i]] = proofs[i];
     // }
     while (proofs.length > 0 && ([{ result: proof }] = [proofs.shift()])) {
-      console.log("proof ", proof)
+      console.log('proof ', proof)
       proofObj[provers[i]] = proof
       i++
     }

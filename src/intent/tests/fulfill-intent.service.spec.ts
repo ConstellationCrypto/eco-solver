@@ -600,7 +600,10 @@ describe('FulfillIntentService', () => {
         proofService.isHyperlaneProver = mockHyperlane
         proofService.isMetalayerProver = mockMetalayer
 
-        const result = await fulfillIntentService['getFulfillIntentTx'](solver.solverAddress, model as any)
+        const result = await fulfillIntentService['getFulfillIntentTx'](
+          solver.solverAddress,
+          model as any,
+        )
         expect(result.value).toBe(0n)
       })
     })

@@ -16,12 +16,11 @@ import { SolverModule } from '../solver/solver.module'
 import { ValidationService } from '@/intent/validation.sevice'
 import { FeeModule } from '@/fee/fee.module'
 
-
 @Module({
   imports: [
     BalanceModule,
     FeeModule,
-//     FlagsModule,
+    //     FlagsModule,
     MongooseModule.forFeature([{ name: IntentSourceModel.name, schema: IntentSourceSchema }]),
     ProverModule,
     SolverModule,

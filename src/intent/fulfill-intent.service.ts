@@ -30,1202 +30,1202 @@ import { IntentDataModel } from '@/intent/schemas/intent-data.schema'
 
 let InboxAbi = [
   {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_owner",
-              "type": "address"
-          },
-          {
-              "internalType": "bool",
-              "name": "_isSolvingPublic",
-              "type": "bool"
-          },
-          {
-              "internalType": "address[]",
-              "name": "_solvers",
-              "type": "address[]"
-          }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_owner',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: '_isSolvingPublic',
+        type: 'bool',
+      },
+      {
+        internalType: 'address[]',
+        name: '_solvers',
+        type: 'address[]',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
-      "inputs": [
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'target',
+        type: 'address',
+      },
+    ],
+    name: 'AddressEmptyCode',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'AddressInsufficientBalance',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'CallToMailbox',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'FailedInnerCall',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_requiredFee',
+        type: 'uint256',
+      },
+    ],
+    name: 'InsufficientFee',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+    ],
+    name: 'IntentAlreadyFulfilled',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_addr',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: '_data',
+        type: 'bytes',
+      },
+      {
+        internalType: 'uint256',
+        name: 'value',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: '_returnData',
+        type: 'bytes',
+      },
+    ],
+    name: 'IntentCallFailed',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'IntentExpired',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+    ],
+    name: 'IntentNotFulfilled',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+    ],
+    name: 'InvalidHash',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_inbox',
+        type: 'address',
+      },
+    ],
+    name: 'InvalidInbox',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'NativeTransferFailed',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_solver',
+        type: 'address',
+      },
+    ],
+    name: 'UnauthorizedSolveAttempt',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'UnauthorizedTransferNative',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'ZeroClaimant',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+    ],
+    name: 'AddToBatch',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32[]',
+        name: '_hashes',
+        type: 'bytes32[]',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+    ],
+    name: 'BatchSent',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+    ],
+    name: 'Fulfillment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+    ],
+    name: 'HyperInstantFulfillment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_mailbox',
+        type: 'address',
+      },
+    ],
+    name: 'MailboxSet',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+    ],
+    name: 'MetalayerInstantFulfillment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_router',
+        type: 'address',
+      },
+    ],
+    name: 'RouterSet',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_solver',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'bool',
+        name: '_canSolve',
+        type: 'bool',
+      },
+    ],
+    name: 'SolverWhitelistChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: 'SolvingIsPublic',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: '_hash',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+    ],
+    name: 'ToBeProven',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_solver',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: '_canSolve',
+        type: 'bool',
+      },
+    ],
+    name: 'changeSolverWhitelist',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_prover',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'bytes',
+        name: '_messageBody',
+        type: 'bytes',
+      },
+      {
+        internalType: 'bytes',
+        name: '_metadata',
+        type: 'bytes',
+      },
+      {
+        internalType: 'address',
+        name: '_postDispatchHook',
+        type: 'address',
+      },
+    ],
+    name: 'fetchFee',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'fee',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
           {
-              "internalType": "address",
-              "name": "target",
-              "type": "address"
-          }
-      ],
-      "name": "AddressEmptyCode",
-      "type": "error"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-          }
-      ],
-      "name": "AddressInsufficientBalance",
-      "type": "error"
-  },
-  {
-      "inputs": [],
-      "name": "CallToMailbox",
-      "type": "error"
-  },
-  {
-      "inputs": [],
-      "name": "FailedInnerCall",
-      "type": "error"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "uint256",
-              "name": "_requiredFee",
-              "type": "uint256"
-          }
-      ],
-      "name": "InsufficientFee",
-      "type": "error"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          }
-      ],
-      "name": "IntentAlreadyFulfilled",
-      "type": "error"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_addr",
-              "type": "address"
+            internalType: 'bytes32',
+            name: 'salt',
+            type: 'bytes32',
           },
           {
-              "internalType": "bytes",
-              "name": "_data",
-              "type": "bytes"
+            internalType: 'uint256',
+            name: 'source',
+            type: 'uint256',
           },
           {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
+            internalType: 'uint256',
+            name: 'destination',
+            type: 'uint256',
           },
           {
-              "internalType": "bytes",
-              "name": "_returnData",
-              "type": "bytes"
-          }
-      ],
-      "name": "IntentCallFailed",
-      "type": "error"
+            internalType: 'address',
+            name: 'inbox',
+            type: 'address',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct TokenAmount[]',
+            name: 'tokens',
+            type: 'tuple[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'target',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct Call[]',
+            name: 'calls',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Route',
+        name: '_route',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_rewardHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+    ],
+    name: 'fulfillHyperBatched',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: '',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "inputs": [],
-      "name": "IntentExpired",
-      "type": "error"
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'bytes32',
+            name: 'salt',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'source',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'destination',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'inbox',
+            type: 'address',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct TokenAmount[]',
+            name: 'tokens',
+            type: 'tuple[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'target',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct Call[]',
+            name: 'calls',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Route',
+        name: '_route',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_rewardHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+    ],
+    name: 'fulfillHyperInstant',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: '',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "inputs": [
+    inputs: [
+      {
+        components: [
           {
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          }
-      ],
-      "name": "IntentNotFulfilled",
-      "type": "error"
+            internalType: 'bytes32',
+            name: 'salt',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'source',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'destination',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'inbox',
+            type: 'address',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct TokenAmount[]',
+            name: 'tokens',
+            type: 'tuple[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'target',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct Call[]',
+            name: 'calls',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Route',
+        name: '_route',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_rewardHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: '_metadata',
+        type: 'bytes',
+      },
+      {
+        internalType: 'address',
+        name: '_postDispatchHook',
+        type: 'address',
+      },
+    ],
+    name: 'fulfillHyperInstantWithRelayer',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: '',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "inputs": [
+    inputs: [
+      {
+        components: [
           {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          }
-      ],
-      "name": "InvalidHash",
-      "type": "error"
+            internalType: 'bytes32',
+            name: 'salt',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'source',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'destination',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'inbox',
+            type: 'address',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct TokenAmount[]',
+            name: 'tokens',
+            type: 'tuple[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'target',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct Call[]',
+            name: 'calls',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Route',
+        name: '_route',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_rewardHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+    ],
+    name: 'fulfillMetalayerInstant',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: '',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "inputs": [
+    inputs: [
+      {
+        components: [
           {
-              "internalType": "address",
-              "name": "_inbox",
-              "type": "address"
-          }
-      ],
-      "name": "InvalidInbox",
-      "type": "error"
+            internalType: 'bytes32',
+            name: 'salt',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'uint256',
+            name: 'source',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'destination',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'inbox',
+            type: 'address',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'token',
+                type: 'address',
+              },
+              {
+                internalType: 'uint256',
+                name: 'amount',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct TokenAmount[]',
+            name: 'tokens',
+            type: 'tuple[]',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'target',
+                type: 'address',
+              },
+              {
+                internalType: 'bytes',
+                name: 'data',
+                type: 'bytes',
+              },
+              {
+                internalType: 'uint256',
+                name: 'value',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct Call[]',
+            name: 'calls',
+            type: 'tuple[]',
+          },
+        ],
+        internalType: 'struct Route',
+        name: '_route',
+        type: 'tuple',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_rewardHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'address',
+        name: '_claimant',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: '_expectedHash',
+        type: 'bytes32',
+      },
+    ],
+    name: 'fulfillStorage',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: '',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "inputs": [],
-      "name": "NativeTransferFailed",
-      "type": "error"
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    name: 'fulfilled',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-          }
-      ],
-      "name": "OwnableInvalidOwner",
-      "type": "error"
+    inputs: [],
+    name: 'isSolvingPublic',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-          }
-      ],
-      "name": "OwnableUnauthorizedAccount",
-      "type": "error"
+    inputs: [],
+    name: 'mailbox',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-          }
-      ],
-      "name": "SafeERC20FailedOperation",
-      "type": "error"
+    inputs: [],
+    name: 'makeSolvingPublic',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_solver",
-              "type": "address"
-          }
-      ],
-      "name": "UnauthorizedSolveAttempt",
-      "type": "error"
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "inputs": [],
-      "name": "UnauthorizedTransferNative",
-      "type": "error"
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-      "inputs": [],
-      "name": "ZeroClaimant",
-      "type": "error"
+    inputs: [],
+    name: 'router',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "indexed": false,
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          }
-      ],
-      "name": "AddToBatch",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32[]',
+        name: '_intentHashes',
+        type: 'bytes32[]',
+      },
+    ],
+    name: 'sendBatch',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32[]",
-              "name": "_hashes",
-              "type": "bytes32[]"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          }
-      ],
-      "name": "BatchSent",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_sourceChainID',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_prover',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32[]',
+        name: '_intentHashes',
+        type: 'bytes32[]',
+      },
+      {
+        internalType: 'bytes',
+        name: '_metadata',
+        type: 'bytes',
+      },
+      {
+        internalType: 'address',
+        name: '_postDispatchHook',
+        type: 'address',
+      },
+    ],
+    name: 'sendBatchWithRelayer',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          }
-      ],
-      "name": "Fulfillment",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_mailbox',
+        type: 'address',
+      },
+    ],
+    name: 'setMailbox',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          }
-      ],
-      "name": "HyperInstantFulfillment",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_router',
+        type: 'address',
+      },
+    ],
+    name: 'setRouter',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_mailbox",
-              "type": "address"
-          }
-      ],
-      "name": "MailboxSet",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'solverWhitelist',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          }
-      ],
-      "name": "MetalayerInstantFulfillment",
-      "type": "event"
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-          }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
+    inputs: [],
+    name: 'version',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
   },
   {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_router",
-              "type": "address"
-          }
-      ],
-      "name": "RouterSet",
-      "type": "event"
+    stateMutability: 'payable',
+    type: 'receive',
   },
-  {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_solver",
-              "type": "address"
-          },
-          {
-              "indexed": true,
-              "internalType": "bool",
-              "name": "_canSolve",
-              "type": "bool"
-          }
-      ],
-      "name": "SolverWhitelistChanged",
-      "type": "event"
-  },
-  {
-      "anonymous": false,
-      "inputs": [],
-      "name": "SolvingIsPublic",
-      "type": "event"
-  },
-  {
-      "anonymous": false,
-      "inputs": [
-          {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "_hash",
-              "type": "bytes32"
-          },
-          {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          }
-      ],
-      "name": "ToBeProven",
-      "type": "event"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_solver",
-              "type": "address"
-          },
-          {
-              "internalType": "bool",
-              "name": "_canSolve",
-              "type": "bool"
-          }
-      ],
-      "name": "changeSolverWhitelist",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_prover",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "bytes",
-              "name": "_messageBody",
-              "type": "bytes"
-          },
-          {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-          },
-          {
-              "internalType": "address",
-              "name": "_postDispatchHook",
-              "type": "address"
-          }
-      ],
-      "name": "fetchFee",
-      "outputs": [
-          {
-              "internalType": "uint256",
-              "name": "fee",
-              "type": "uint256"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "components": [
-                  {
-                      "internalType": "bytes32",
-                      "name": "salt",
-                      "type": "bytes32"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "source",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "destination",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "address",
-                      "name": "inbox",
-                      "type": "address"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "token",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "amount",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct TokenAmount[]",
-                      "name": "tokens",
-                      "type": "tuple[]"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "target",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "bytes",
-                              "name": "data",
-                              "type": "bytes"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "value",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct Call[]",
-                      "name": "calls",
-                      "type": "tuple[]"
-                  }
-              ],
-              "internalType": "struct Route",
-              "name": "_route",
-              "type": "tuple"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_rewardHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          }
-      ],
-      "name": "fulfillHyperBatched",
-      "outputs": [
-          {
-              "internalType": "bytes[]",
-              "name": "",
-              "type": "bytes[]"
-          }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "components": [
-                  {
-                      "internalType": "bytes32",
-                      "name": "salt",
-                      "type": "bytes32"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "source",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "destination",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "address",
-                      "name": "inbox",
-                      "type": "address"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "token",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "amount",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct TokenAmount[]",
-                      "name": "tokens",
-                      "type": "tuple[]"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "target",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "bytes",
-                              "name": "data",
-                              "type": "bytes"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "value",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct Call[]",
-                      "name": "calls",
-                      "type": "tuple[]"
-                  }
-              ],
-              "internalType": "struct Route",
-              "name": "_route",
-              "type": "tuple"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_rewardHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          }
-      ],
-      "name": "fulfillHyperInstant",
-      "outputs": [
-          {
-              "internalType": "bytes[]",
-              "name": "",
-              "type": "bytes[]"
-          }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "components": [
-                  {
-                      "internalType": "bytes32",
-                      "name": "salt",
-                      "type": "bytes32"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "source",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "destination",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "address",
-                      "name": "inbox",
-                      "type": "address"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "token",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "amount",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct TokenAmount[]",
-                      "name": "tokens",
-                      "type": "tuple[]"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "target",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "bytes",
-                              "name": "data",
-                              "type": "bytes"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "value",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct Call[]",
-                      "name": "calls",
-                      "type": "tuple[]"
-                  }
-              ],
-              "internalType": "struct Route",
-              "name": "_route",
-              "type": "tuple"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_rewardHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-          },
-          {
-              "internalType": "address",
-              "name": "_postDispatchHook",
-              "type": "address"
-          }
-      ],
-      "name": "fulfillHyperInstantWithRelayer",
-      "outputs": [
-          {
-              "internalType": "bytes[]",
-              "name": "",
-              "type": "bytes[]"
-          }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "components": [
-                  {
-                      "internalType": "bytes32",
-                      "name": "salt",
-                      "type": "bytes32"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "source",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "destination",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "address",
-                      "name": "inbox",
-                      "type": "address"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "token",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "amount",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct TokenAmount[]",
-                      "name": "tokens",
-                      "type": "tuple[]"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "target",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "bytes",
-                              "name": "data",
-                              "type": "bytes"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "value",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct Call[]",
-                      "name": "calls",
-                      "type": "tuple[]"
-                  }
-              ],
-              "internalType": "struct Route",
-              "name": "_route",
-              "type": "tuple"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_rewardHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          }
-      ],
-      "name": "fulfillMetalayerInstant",
-      "outputs": [
-          {
-              "internalType": "bytes[]",
-              "name": "",
-              "type": "bytes[]"
-          }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "components": [
-                  {
-                      "internalType": "bytes32",
-                      "name": "salt",
-                      "type": "bytes32"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "source",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "uint256",
-                      "name": "destination",
-                      "type": "uint256"
-                  },
-                  {
-                      "internalType": "address",
-                      "name": "inbox",
-                      "type": "address"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "token",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "amount",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct TokenAmount[]",
-                      "name": "tokens",
-                      "type": "tuple[]"
-                  },
-                  {
-                      "components": [
-                          {
-                              "internalType": "address",
-                              "name": "target",
-                              "type": "address"
-                          },
-                          {
-                              "internalType": "bytes",
-                              "name": "data",
-                              "type": "bytes"
-                          },
-                          {
-                              "internalType": "uint256",
-                              "name": "value",
-                              "type": "uint256"
-                          }
-                      ],
-                      "internalType": "struct Call[]",
-                      "name": "calls",
-                      "type": "tuple[]"
-                  }
-              ],
-              "internalType": "struct Route",
-              "name": "_route",
-              "type": "tuple"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_rewardHash",
-              "type": "bytes32"
-          },
-          {
-              "internalType": "address",
-              "name": "_claimant",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32",
-              "name": "_expectedHash",
-              "type": "bytes32"
-          }
-      ],
-      "name": "fulfillStorage",
-      "outputs": [
-          {
-              "internalType": "bytes[]",
-              "name": "",
-              "type": "bytes[]"
-          }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "bytes32",
-              "name": "",
-              "type": "bytes32"
-          }
-      ],
-      "name": "fulfilled",
-      "outputs": [
-          {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "isSolvingPublic",
-      "outputs": [
-          {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "mailbox",
-      "outputs": [
-          {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "makeSolvingPublic",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-          {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "router",
-      "outputs": [
-          {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32[]",
-              "name": "_intentHashes",
-              "type": "bytes32[]"
-          }
-      ],
-      "name": "sendBatch",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "uint256",
-              "name": "_sourceChainID",
-              "type": "uint256"
-          },
-          {
-              "internalType": "address",
-              "name": "_prover",
-              "type": "address"
-          },
-          {
-              "internalType": "bytes32[]",
-              "name": "_intentHashes",
-              "type": "bytes32[]"
-          },
-          {
-              "internalType": "bytes",
-              "name": "_metadata",
-              "type": "bytes"
-          },
-          {
-              "internalType": "address",
-              "name": "_postDispatchHook",
-              "type": "address"
-          }
-      ],
-      "name": "sendBatchWithRelayer",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_mailbox",
-              "type": "address"
-          }
-      ],
-      "name": "setMailbox",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "_router",
-              "type": "address"
-          }
-      ],
-      "name": "setRouter",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-          }
-      ],
-      "name": "solverWhitelist",
-      "outputs": [
-          {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-          }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-  },
-  {
-      "inputs": [
-          {
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-          }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-  },
-  {
-      "inputs": [],
-      "name": "version",
-      "outputs": [
-          {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-          }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-  },
-  {
-      "stateMutability": "payable",
-      "type": "receive"
-  }
-];
+]
 
 // TODO: Remove this once the updated routes-ts package is published
 type FulfillmentMethod = ContractFunctionName<typeof InboxAbi> | 'fulfillMetalayerInstant'
@@ -1423,7 +1423,6 @@ export class FulfillIntentService {
     inboxAddress: Hex,
     model: IntentSourceModel,
   ): Promise<ExecuteSmartWalletArg> {
-
     /*
         function fulfillMetalayerInstant(
         Route calldata _route,
@@ -1432,18 +1431,17 @@ export class FulfillIntentService {
         bytes32 _expectedHash,
         address _prover
         */
-    console.log("in fulfill intent")
+    console.log('in fulfill intent')
     const claimant = this.ecoConfigService.getEth().claimant
     const isHyperlane = this.proofService.isHyperlaneProver(model.intent.reward.prover)
     const isMetalayer = this.proofService.isMetalayerProver(model.intent.reward.prover)
     const functionName: FulfillmentMethod = this.proofService.isStorageProver(
       model.intent.reward.prover,
     )
-
       ? 'fulfillStorage'
       : isMetalayer
-      ? 'fulfillMetalayerInstant'
-      : this.getFulfillment()
+        ? 'fulfillMetalayerInstant'
+        : this.getFulfillment()
 
     const args = [
       model.intent.route,
@@ -1475,7 +1473,7 @@ export class FulfillIntentService {
 
     console.log(args)
     console.log(functionName)
-    console.log(typeof(InboxAbi))
+    console.log(typeof InboxAbi)
     //console.log(InboxAbi.length)
     console.log(InboxAbi)
     const fulfillIntentData = encodeFunctionData({
@@ -1485,7 +1483,7 @@ export class FulfillIntentService {
       // // @ts-expect-error we dynamically set the args
       args,
     })
-    console.log("successfully generated fulfill intent data")
+    console.log('successfully generated fulfill intent data')
 
     return {
       to: inboxAddress,
