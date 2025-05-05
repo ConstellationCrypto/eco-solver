@@ -45,7 +45,6 @@ export class CreateIntentService implements OnModuleInit {
    * @returns
    */
   async createIntent(serializedIntentWs: Serialize<IntentCreatedLog>) {
-    console.log('in create intent')
     const intentWs = deserialize(serializedIntentWs)
 
     this.logger.debug(

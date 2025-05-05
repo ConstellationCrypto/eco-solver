@@ -55,7 +55,6 @@ export class FeasableIntentService implements OnModuleInit {
       return
     }
 
-    console.log(model.intent)
     const { error } = await this.feeService.isRouteFeasible(model.intent)
 
     const jobId = getIntentJobId('feasable', intentHash, model!.intent.logIndex)
