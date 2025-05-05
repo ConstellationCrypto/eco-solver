@@ -520,7 +520,6 @@ describe('FulfillIntentService', () => {
           .fn()
           .mockReturnValue('fulfillHyperInstantWithRelayer')
         defaultArgs.push(model.intent.reward.prover)
-
         defaultArgs.push('0x0')
         defaultArgs.push(zeroAddress)
         const tx = await fulfillIntentService['getFulfillIntentTx'](
@@ -546,7 +545,6 @@ describe('FulfillIntentService', () => {
         jest.spyOn(proofService, 'isHyperlaneProver').mockReturnValue(true)
         jest.spyOn(proofService, 'isMetalayerProver').mockReturnValue(false)
         mockEncodeFunctionData.mockReturnValue(data)
-
         fulfillIntentService['getFulfillment'] = jest.fn().mockReturnValue('fulfillHyperBatched')
         defaultArgs.push(model.intent.reward.prover)
         const tx = await fulfillIntentService['getFulfillIntentTx'](

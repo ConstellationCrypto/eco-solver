@@ -117,11 +117,9 @@ describe('ProofService', () => {
         metalayer_duration_seconds: 30,
       },
     }
-
     beforeEach(async () => {
       ecoConfigService.getIntentConfigs = jest.fn().mockReturnValue(intentConfigs)
     })
-
     it('should correctly check if its a hyperlane prover', async () => {
       jest.spyOn(proofService, 'getProofType').mockReturnValue(PROOF_HYPERLANE)
       expect(proofService.isHyperlaneProver('0x123')).toBe(true)
