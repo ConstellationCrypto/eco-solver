@@ -20,8 +20,7 @@ import {
   KernelAccountClientV2Config,
 } from '@/transaction/smart-wallets/kernel/create-kernel-client-v2.account'
 import { EthereumProvider } from 'permissionless/utils/toOwner'
-// import { SignerKmsService } from '@/sign/signer-kms.service'
-import { SignerService } from '@/sign/signer.service'
+import { SignerKmsService } from '@/sign/signer-kms.service'
 
 class KernelAccountClientV2ServiceBase<
   entryPointVersion extends '0.6' | '0.7',
@@ -37,7 +36,7 @@ class KernelAccountClientV2ServiceBase<
 
   constructor(
     readonly ecoConfigService: EcoConfigService,
-    private readonly signerService: SignerService,
+    private readonly signerService: SignerKmsService,
   ) {
     super(ecoConfigService)
   }
@@ -85,7 +84,7 @@ export class KernelAccountClientV2Service extends KernelAccountClientV2ServiceBa
   entryPointV_0_7,
   KernelVersion<entryPointV_0_7>
 > {
-  constructor(ecoConfigService: EcoConfigService, signerService: SignerService) {
+  constructor(ecoConfigService: EcoConfigService, signerService: SignerKmsService) {
     super(ecoConfigService, signerService)
   }
 }
