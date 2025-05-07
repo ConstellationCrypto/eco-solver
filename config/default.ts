@@ -98,7 +98,7 @@ export default {
   },
   externalAPIs: {},
   logger: {
-    usePino: true,
+    usePino: false,
     pinoConfig: {
       pinoHttp: {
         level: 'debug',
