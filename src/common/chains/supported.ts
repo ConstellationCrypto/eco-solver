@@ -10,6 +10,7 @@ import { mantle } from './definitions/mantle'
 import { optimism, optimismSepolia } from './definitions/optimism'
 import { polygon } from './definitions/polygon'
 import { unichain } from './definitions/unichain'
+import { curtis } from '@metalayer/chains'
 
 /**
  * List of supported chains for the solver that have modified RPC URLs or are defined in the project
@@ -30,4 +31,6 @@ export const ChainsSupported: Chain[] = [
   celo,
   ink,
   unichain,
+  curtis,
+
 ]

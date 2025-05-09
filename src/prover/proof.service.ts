@@ -6,7 +6,7 @@ import { IProverAbi } from '@eco-foundation/routes-ts'
 import { EcoLogMessage } from '@/common/logging/eco-log-message'
 import { EcoConfigService } from '@/eco-configs/eco-config.service'
 import { MultichainPublicClientService } from '@/transaction/multichain-public-client.service'
-import { PROOF_HYPERLANE, PROOF_STORAGE, ProofCall, ProofType } from '@/contracts'
+import { PROOF_HYPERLANE, PROOF_STORAGE, PROOF_METALAYER, ProofCall, ProofType } from '@/contracts'
 
 /**
  * Service class for getting information about the provers and their configurations.
@@ -56,6 +56,15 @@ export class ProofService implements OnModuleInit {
    */
   isStorageProver(proverAddress: Hex): boolean {
     return this.getProofType(proverAddress) === PROOF_STORAGE
+  }
+
+  /**
+   * Checks if the prover is a metalayer prover
+   * @param proverAddress the prover address
+   * @returns
+   */
+  isMetalayerProver(proverAddress: Hex): boolean {
+    return this.getProofType(proverAddress) === PROOF_METALAYER
   }
 
   /**
@@ -185,6 +194,8 @@ export class ProofService implements OnModuleInit {
     switch (prover) {
       case PROOF_HYPERLANE:
         return proofs.hyperlane_duration_seconds
+      case PROOF_METALAYER:
+        return proofs.metalayer_duration_seconds
       case PROOF_STORAGE:
       default:
         return proofs.storage_duration_seconds
