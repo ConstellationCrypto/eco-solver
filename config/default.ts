@@ -1,16 +1,16 @@
 export default {
   aws: [
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-secrets-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-secrets-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-configs-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-configs-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-whitelist-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-whitelist-prod-test',
     },
   ],
   cache: {
@@ -185,6 +185,9 @@ export default {
   hyperlane: {
     useHyperlaneDefaultHook: false,
   },
+
+  rpcs: {},
+  warpRoutes: {},
 
   externalAPIs: {},
   logger: {
