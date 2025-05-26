@@ -186,8 +186,9 @@ export default {
     useHyperlaneDefaultHook: false,
   },
 
-  rpcs: {},
   warpRoutes: {},
+  safe: {},
+  crowdLiquidity: {},
 
   externalAPIs: {},
   logger: {
