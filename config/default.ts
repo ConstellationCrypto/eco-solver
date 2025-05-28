@@ -189,10 +189,13 @@ export default {
   warpRoutes: {},
   safe: {},
   crowdLiquidity: {},
+  fulfillment: {
+    run: 'single',
+  },
 
   externalAPIs: {},
   logger: {
-    usePino: true,
+    usePino: false,
     pinoConfig: {
       pinoHttp: {
         level: 'debug',

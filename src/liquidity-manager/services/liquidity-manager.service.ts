@@ -70,7 +70,7 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     this.config = this.ecoConfigService.getLiquidityManager()
 
     // Use OP as the default chain assuming the Kernel wallet is the same across all chains
-    const opChainId = 10
+    const opChainId = 33111
     const client = await this.kernelAccountClientService.getClient(opChainId)
     const kernelAddress = client.kernelAccount.address
 
