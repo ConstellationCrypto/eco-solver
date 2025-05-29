@@ -18,6 +18,15 @@ import { ChainsSupported } from '@/common/chains/supported'
 import { getChainConfig } from './utils'
 import { EcoChains } from '@eco-foundation/chains'
 import { EcoError } from '../common/errors/eco-error'
+import { EcoChainConfig } from '@eco-foundation/routes-ts'
+
+const CALDERA_CHAIN_CONFIG: EcoChainConfig = {
+  IntentSource: '0x50673016E0720d6B7FA5Af3290709Fc8bAF65A70',
+  Inbox: '0xCc71EA5C67795EF12be2328C14F7E96A39D71067',
+  HyperProver: '0x0000000000000000000000000000000000000000',
+  MetaProver: '0xcF415cFD2f287Ea5e394BAA1f12035fC57d6EED8',
+}
+
 /**
  * Service class for managing application configuration from multiple sources.
  *
@@ -109,7 +118,12 @@ export class EcoConfigService {
   // Returns the source intents config
   getIntentSources(): EcoConfigType['intentSources'] {
     return this.get<IntentSource[]>('intentSources').map((intent: IntentSource) => {
-      const config = getChainConfig(intent.chainID)
+      let config: EcoChainConfig
+      if (this.getSupportedChains().includes(BigInt(intent.chainID))) {
+        config = CALDERA_CHAIN_CONFIG
+      } else {
+        config = getChainConfig(intent.chainID)
+      }
       intent.sourceAddress = config.IntentSource
       intent.inbox = config.Inbox
       const ecoNpm = intent.config ? intent.config.ecoRoutes : ProverEcoRoutesProverAppend
@@ -156,8 +170,14 @@ export class EcoConfigService {
   // Returns the solvers config
   getSolvers(): EcoConfigType['solvers'] {
     const solvers = this.get<Record<number, Solver>>('solvers')
+
     _.entries(solvers).forEach(([, solver]: [string, Solver]) => {
-      const config = getChainConfig(solver.chainID)
+      let config: EcoChainConfig
+      if (this.getSupportedChains().includes(BigInt(solver.chainID))) {
+        config = CALDERA_CHAIN_CONFIG
+      } else {
+        config = getChainConfig(solver.chainID)
+      }
       solver.inboxAddress = config.Inbox
       solver.targets = addressKeys(solver.targets) ?? {}
     })
@@ -324,7 +344,8 @@ export class EcoConfigService {
    * @returns the supported chains for the event
    */
   getSupportedChains(): bigint[] {
-    return _.entries(this.getSolvers()).map(([, solver]) => BigInt(solver.chainID))
+    const solvers = this.get<Record<number, Solver>>('solvers')
+    return _.entries(solvers).map(([, solver]) => BigInt(solver.chainID))
   }
 
   /**
