@@ -18,7 +18,6 @@ import { ChainsSupported } from '@/common/chains/supported'
 import { getChainConfig } from './utils'
 import { EcoChains } from '@eco-foundation/chains'
 import { EcoError } from '../common/errors/eco-error'
-
 /**
  * Service class for managing application configuration from multiple sources.
  *
@@ -157,7 +156,6 @@ export class EcoConfigService {
   // Returns the solvers config
   getSolvers(): EcoConfigType['solvers'] {
     const solvers = this.get<Record<number, Solver>>('solvers')
-
     _.entries(solvers).forEach(([, solver]: [string, Solver]) => {
       const config = getChainConfig(solver.chainID)
       solver.inboxAddress = config.Inbox
@@ -326,8 +324,7 @@ export class EcoConfigService {
    * @returns the supported chains for the event
    */
   getSupportedChains(): bigint[] {
-    const solvers = this.get<Record<number, Solver>>('solvers')
-    return _.entries(solvers).map(([, solver]) => BigInt(solver.chainID))
+    return _.entries(this.getSolvers()).map(([, solver]) => BigInt(solver.chainID))
   }
 
   /**
