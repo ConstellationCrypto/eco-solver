@@ -11,6 +11,8 @@ export type TransportOptions =
   | { isWebsocket: true; options?: WebSocketTransportConfig }
   | { isWebsocket?: false; options?: HttpTransportConfig }
 
+
+
 /**
  * Returns transport for the chain with the given api key
  *

@@ -12,11 +12,11 @@ import {
   SafeType,
   Solver,
 } from './eco-config.types'
-import { Chain, getAddress, zeroAddress } from 'viem'
+import { Chain, getAddress, zeroAddress, extractChain } from 'viem'
 import { addressKeys } from '@/common/viem/utils'
 import { ChainsSupported } from '@/common/chains/supported'
 import { getChainConfig } from './utils'
-import { EcoChains } from '@eco-foundation/chains'
+import { EcoChain, EcoChains } from '@eco-foundation/chains'
 import { EcoError } from '../common/errors/eco-error'
 /**
  * Service class for managing application configuration from multiple sources.
@@ -297,7 +297,13 @@ export class EcoConfigService {
    * @returns The RPC URL string for the specified chain
    */
   getRpcUrl(chain: Chain, websocketEnabled: boolean = false) {
-    const rpcChain = this.ecoChains.getChain(chain.id)
+    let rpcChain: EcoChain | Chain
+    try {
+      rpcChain = this.ecoChains.getChain(chain.id)
+    } catch (e) {
+      rpcChain = extractChain({ chains: ChainsSupported, id: chain.id })
+    }
+
     const custom =
       rpcChain.rpcUrls.caldera || rpcChain.rpcUrls.alchemy || rpcChain.rpcUrls.quicknode
     const def = rpcChain.rpcUrls.default
@@ -309,7 +315,11 @@ export class EcoConfigService {
       rpc = custom?.http?.[0] || def?.http?.[0]
     }
     if (!rpc) {
-      throw EcoError.ChainExistsButRPCNotFound(chain.id)
+      rpc = custom?.http?.[0] || def?.http?.[0]
+      websocketEnabled = false
+      if (!rpc) {
+        throw EcoError.ChainExistsButRPCNotFound(chain.id)
+      }
     }
     return {
       rpcUrl: rpc,
