@@ -53,6 +53,7 @@ export async function createKernelAccountClient<
 >(
   parameters: KernelAccountClientConfig<entryPointVersion, KernelVersion<entryPointVersion>, owner>,
 ): Promise<{ client: KernelAccountClient<entryPointVersion>; args: DeployFactoryArgs }> {
+  const logger = getLogger()
   const { key = 'kernelAccountClient', name = 'Kernel Account Client', transport } = parameters
   const { account } = parameters
 
@@ -91,13 +92,15 @@ export async function createKernelAccountClient<
       kernelVersion,
     })
   } catch (e) {
-    EcoLogMessage.fromDefault({
-      message: `createKernelAccountClient createKernelAccount: `,
-      properties: {
-        chainID: walletClient.chain?.id,
-        e,
-      },
-    })
+    logger.log(
+      EcoLogMessage.fromDefault({
+        message: `createKernelAccountClient createKernelAccount: `,
+        properties: {
+          chainID: walletClient.chain?.id,
+          e,
+        },
+      }),
+    )
     throw e
   }
 

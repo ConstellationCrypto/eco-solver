@@ -1,16 +1,16 @@
 export default {
   aws: [
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-secrets-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-secrets-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-configs-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-configs-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-whitelist-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-whitelist-prod-test',
     },
   ],
   cache: {
@@ -127,9 +127,6 @@ export default {
     defaultBlockTime: 2,
   },
 
-  indexer: {
-    url: 'https://indexer.eco.com',
-  },
   withdraws: {
     chunkSize: 20,
     intervalDuration: 360_000,
@@ -186,9 +183,16 @@ export default {
     useHyperlaneDefaultHook: false,
   },
 
+  warpRoutes: {},
+  safe: {},
+  crowdLiquidity: {},
+  fulfillment: {
+    run: 'single',
+  },
+
   externalAPIs: {},
   logger: {
-    usePino: true,
+    usePino: false,
     pinoConfig: {
       pinoHttp: {
         level: 'debug',
