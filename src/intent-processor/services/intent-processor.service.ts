@@ -105,7 +105,7 @@ export class IntentProcessorService implements OnApplicationBootstrap {
     const intentSourceAddr = this.getIntentSource()
 
     const proves = await this.indexerService.getNextSendBatch(intentSourceAddr)
-    const batchProvesPerChain = _.groupBy(proves, (prove) => prove.destinationChainId)
+    let batchProvesPerChain = _.groupBy(proves, (prove) => prove.destinationChainId)
 
     this.logger.debug(
       EcoLogMessage.fromDefault({
@@ -116,6 +116,7 @@ export class IntentProcessorService implements OnApplicationBootstrap {
         },
       }),
     )
+    batchProvesPerChain = {} // TODO: Remove when Eco supports Metaprover for send batches
 
     const jobsData: ExecuteSendBatchJobData[] = []
 
