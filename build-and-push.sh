@@ -1,5 +1,23 @@
 #!/bin/bash
 set -e
+
+# Check AWS profile
+echo "Checking AWS profile..."
+if [[ -z "$AWS_PROFILE" ]]; then
+    echo "AWS_PROFILE is not set"
+    CURRENT_PROFILE=$(aws configure get profile 2>/dev/null || echo "default")
+else
+    CURRENT_PROFILE="$AWS_PROFILE"
+fi
+
+echo "Current AWS profile: $CURRENT_PROFILE"
+
+if [[ "$CURRENT_PROFILE" != "Constellation-Admin/PowerUser" ]]; then
+    echo "Error: Please use the Constellation-Admin/PowerUser AWS profile"
+    echo "Current profile: $CURRENT_PROFILE"
+    exit 1
+fi
+
 # Check for environment argument
 if [[ "$1" != "dev" && "$1" != "prod" ]]; then
     echo "Error: Please specify environment (dev or prod) as first argument"
