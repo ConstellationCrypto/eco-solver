@@ -80,7 +80,7 @@ export class LiquidityManagerService implements OnApplicationBootstrap {
     const env = getNodeEnv()
     let chainId
     if (env === NodeEnv.production) {
-      chainId = 33139 // apechain
+      chainId = 8333 // B3
     } else {
       chainId = 33111 // curtis
     }

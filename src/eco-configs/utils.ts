@@ -59,10 +59,10 @@ function getCalderaChainConfig(): EcoChainConfig {
   const env = getNodeEnv()
   if (env === NodeEnv.production) {
     return {
-      IntentSource: '0x192b12FAB612AB8c54f4B416500Ea71CF61a9473',
-      Inbox: '0xCB96D5Db5071b3335F8DB5a97BC90E274AAe24bF',
+      IntentSource: '0x17683C781adb1CD185B08041dA61b02a2DF65538',
+      Inbox: '0xE02A17467Df7b1950C8849dA226844e5d3Db781a',
       HyperProver: '0x0000000000000000000000000000000000000000',
-      MetaProver: '0x83C09c0C0579C23A6acEFD6a2b6285Bcec904207',
+      MetaProver: '0x3d529eFAEDb3B999A404c1B8543441aE616cB914',
     }
   } else {
     return {
