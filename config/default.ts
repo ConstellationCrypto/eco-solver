@@ -203,10 +203,6 @@ export default {
 
   warpRoutes: {},
   safe: {},
-  crowdLiquidity: {},
-  fulfillment: {
-    run: 'single',
-  },
 
   externalAPIs: {},
   logger: {
