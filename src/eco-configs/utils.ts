@@ -66,10 +66,10 @@ function getCalderaChainConfig(): EcoChainConfig {
     }
   } else {
     return {
-      IntentSource: '0x50673016E0720d6B7FA5Af3290709Fc8bAF65A70',
-      Inbox: '0xCc71EA5C67795EF12be2328C14F7E96A39D71067',
+      IntentSource: '0x17683C781adb1CD185B08041dA61b02a2DF65538',
+      Inbox: '0xE02A17467Df7b1950C8849dA226844e5d3Db781a',
       HyperProver: '0x0000000000000000000000000000000000000000',
-      MetaProver: '0xcF415cFD2f287Ea5e394BAA1f12035fC57d6EED8',
+      MetaProver: '0xb130cd8e1cb3DA9f8BC583e2A7Bb603c11b61d5A',
     }
   }
 }
