@@ -89,36 +89,6 @@ export default {
 
   gaslessIntentdAppIDs: ['token-pair-validation', 'matrix-test', 'test', 'sdk-demo'],
 
-  intentConfigs: {
-    isNativeETHSupported: true,
-    defaultFee: {
-      limit: {
-        tokenBase6: 1000n * 10n ** 6n,
-        nativeBase18: 1000n * 10n ** 18n,
-      },
-      algorithm: 'linear',
-      constants: {
-        token: {
-          baseFee: 20_000n,
-          tranche: {
-            unitFee: 15_000n,
-            unitSize: 100_000_000n,
-          },
-        },
-        native: {
-          baseFee: 1_000n,
-          tranche: {
-            unitFee: 500n, // 500 wei
-            unitSize: 1n * 10n ** 18n, // 1 ETH
-          },
-        },
-      },
-    },
-    proofs: {
-      hyperlane_duration_seconds: 3600,
-      metalayer_duration_seconds: 7200,
-    },
-  },
   whitelist: {},
 
   fulfillmentEstimate: {
