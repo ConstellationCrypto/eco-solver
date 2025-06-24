@@ -90,7 +90,7 @@ export default {
   gaslessIntentdAppIDs: ['token-pair-validation', 'matrix-test', 'test', 'sdk-demo'],
 
   intentConfigs: {
-    isNativeSupported: true,
+    isNativeETHSupported: true,
     defaultFee: {
       limit: {
         tokenBase6: 1000n * 10n ** 6n,
@@ -120,14 +120,6 @@ export default {
     },
   },
   whitelist: {},
-  liquidityManager: {
-    intervalDuration: 300000,
-    targetSlippage: 0.02,
-    thresholds: {
-      surplus: 0.1,
-      deficit: 0.2,
-    },
-  },
 
   fulfillmentEstimate: {
     // Padding to add to the execution-time estimation

@@ -467,6 +467,8 @@ describe('WalletFulfillService', () => {
           calls: [{ target: address1, data: address2 }],
           deadline: '0x2233',
           salt: '0x3344',
+          source: 10,
+          destination: 11,
           getHash: () => '0xccc',
         },
         reward: {
@@ -500,9 +502,15 @@ describe('WalletFulfillService', () => {
         fulfillIntentService['getFulfillTxForMetalayer'] = jest.fn().mockReturnValue(emptyTxs[0])
         await fulfillIntentService['getFulfillIntentTx'](solver.inboxAddress, model as any)
         expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(proofService.isMetalayerProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isMetalayerProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isMetalayerProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(fulfillIntentService['getFulfillTxForMetalayer']).toHaveBeenCalledTimes(1)
       })
 
@@ -526,9 +534,15 @@ describe('WalletFulfillService', () => {
         )
         expect(tx).toEqual(metaproverTx)
         expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(proofService.isMetalayerProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isMetalayerProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isMetalayerProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(fulfillIntentService['getFulfillTxForMetalayer']).toHaveBeenCalledTimes(1)
       })
     })
@@ -542,7 +556,10 @@ describe('WalletFulfillService', () => {
           .mockReturnValue(emptyTxs[0])
         await fulfillIntentService['getFulfillIntentTx'](solver.inboxAddress, model as any)
         expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(fulfillIntentService['getFulfillTxForHyperproverSingle']).toHaveBeenCalledTimes(1)
       })
 
@@ -555,9 +572,8 @@ describe('WalletFulfillService', () => {
         fulfillIntentService['getFulfillment'] = jest
           .fn()
           .mockReturnValue('fulfillHyperInstantWithRelayer')
-        defaultArgs.push(model.intent.reward.prover)
-        defaultArgs.push('0x0')
-        defaultArgs.push(zeroAddress)
+        defaultArgs.push(address1) // hyperProverAddr
+        defaultArgs.push('0x9911') // messageData
         const hyperproverTx = { to: solver.inboxAddress, data, value: mockFee }
         fulfillIntentService['getFulfillTxForHyperproverSingle'] = jest
           .fn()
@@ -570,7 +586,10 @@ describe('WalletFulfillService', () => {
         expect(tx).toEqual(hyperproverTx)
         expect(proofService.isMetalayerProver).toHaveBeenCalledTimes(0)
         expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(fulfillIntentService['getFulfillTxForHyperproverSingle']).toHaveBeenCalledTimes(1)
       })
 
@@ -594,7 +613,10 @@ describe('WalletFulfillService', () => {
         expect(tx).toEqual(hyperproverTx)
         expect(proofService.isMetalayerProver).toHaveBeenCalledTimes(0)
         expect(proofService.isHyperlaneProver).toHaveBeenCalledTimes(1)
-        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(model.intent.reward.prover)
+        expect(proofService.isHyperlaneProver).toHaveBeenCalledWith(
+          Number(model.intent.route.source),
+          model.intent.reward.prover,
+        )
         expect(fulfillIntentService['getFulfillTxForHyperproverBatch']).toHaveBeenCalledTimes(1)
       })
     })
@@ -636,7 +658,7 @@ describe('WalletFulfillService', () => {
         [{ type: 'bytes32' }, { type: 'bytes' }, { type: 'address' }],
         [pad(model.intent.reward.prover), '0x', zeroAddress],
       )
-      expect(mockProverFee).toHaveBeenCalledWith(model, address1, encodedData)
+      expect(mockProverFee).toHaveBeenCalledWith(model, address2, address1, encodedData)
     })
   })
 
@@ -674,10 +696,10 @@ describe('WalletFulfillService', () => {
       expect(mockEncodeAbiParameters).toHaveBeenCalledTimes(1)
       expect(mockProverFee).toHaveBeenCalledTimes(1)
       expect(mockEncodeAbiParameters).toHaveBeenCalledWith(
-        [{ type: 'uint32' }, { type: 'bytes32' }],
-        [Number(model.intent.route.source), pad(model.intent.reward.prover)],
+        [{ type: 'bytes32' }],
+        [pad(model.intent.reward.prover)],
       )
-      expect(mockProverFee).toHaveBeenCalledWith(model, address1, encodedData)
+      expect(mockProverFee).toHaveBeenCalledWith(model, address2, address1, encodedData)
     })
   })
 })

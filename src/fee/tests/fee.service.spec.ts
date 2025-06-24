@@ -144,7 +144,7 @@ describe('FeeService', () => {
     })
 
     it('should return the default fee for the solver if intent is set', async () => {
-      const solverFee = { limit: 123n } as any
+      const solverFee = { limit: 123n, constants: {} } as any
       feeService['whitelist'] = {}
       feeService['intentConfigs'] = { defaultFee: { limit: 333n } } as any
       feeService['getAskRouteDestinationSolver'] = jest.fn().mockReturnValue({ fee: solverFee })
@@ -303,7 +303,7 @@ describe('FeeService', () => {
           native: 0n,
         })
         expect(feeService.getAsk({ token: 100_000_000n, native: 0n }, intent)).toEqual({
-          token: 100_000_000n + baseFee + 2n * unitFee,
+          token: 100_000_000n + baseFee + 1n * unitFee,
           native: 0n,
         })
         expect(feeService.getAsk({ token: 999_000_000n, native: 0n }, intent)).toEqual({
@@ -311,7 +311,7 @@ describe('FeeService', () => {
           native: 0n,
         })
         expect(feeService.getAsk({ token: 1_000_000_000n, native: 0n }, intent)).toEqual({
-          token: 1_000_000_000n + baseFee + 11n * unitFee,
+          token: 1_000_000_000n + baseFee + 10n * unitFee,
           native: 0n,
         })
       })
@@ -384,6 +384,9 @@ describe('FeeService', () => {
         route: {
           calls: [{}],
         },
+        reward: {
+          tokens: [],
+        },
       }
     })
 
@@ -392,6 +395,42 @@ describe('FeeService', () => {
       expect(await feeService.isRouteFeasible(quote)).toEqual({
         error: QuoteError.MultiFulfillRoute(),
       })
+    })
+
+    it('should return an error if reward tokens have duplicates', async () => {
+      quote.reward = {
+        tokens: [
+          { token: '0x4Fd9098af9ddcB41DA48A1d78F91F1398965addc', amount: 1000n },
+          { token: '0x9D6AC51b972544251Fcc0F2902e633E3f9BD3f29', amount: 2000n },
+          { token: '0x4Fd9098af9ddcB41DA48A1d78F91F1398965addc', amount: 3000n },
+        ],
+      }
+      expect(await feeService.isRouteFeasible(quote)).toEqual({
+        error: QuoteError.DuplicatedRewardToken(),
+      })
+    })
+
+    it('should allow unique reward tokens', async () => {
+      quote.reward = {
+        tokens: [
+          { token: '0x4Fd9098af9ddcB41DA48A1d78F91F1398965addc', amount: 1000n },
+          { token: '0x9D6AC51b972544251Fcc0F2902e633E3f9BD3f29', amount: 2000n },
+        ],
+      }
+      const getTotallFill = jest.spyOn(feeService, 'getTotalFill').mockResolvedValue({
+        totalFillNormalized: totalFillNormalized,
+        error: undefined,
+      })
+      const getTotalRewards = jest.spyOn(feeService, 'getTotalRewards').mockResolvedValue({
+        totalRewardsNormalized: totalRewardsNormalized,
+        error: undefined,
+      })
+      const getAsk = jest.spyOn(feeService, 'getAsk').mockReturnValue(totalRewardsNormalized)
+
+      expect(await feeService.isRouteFeasible(quote)).toEqual({ error: undefined })
+      expect(getTotallFill).toHaveBeenCalled()
+      expect(getTotalRewards).toHaveBeenCalled()
+      expect(getAsk).toHaveBeenCalled()
     })
 
     it('should return an error if getTotalFill fails', async () => {
