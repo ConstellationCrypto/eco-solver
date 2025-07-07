@@ -1,7 +1,7 @@
 import { EcoRoutesChains } from '@eco-foundation/chains'
 import { Chain } from 'viem'
 import { TESTNET_ROLLUPS } from '@metalayer/viem-chains'
-import { bscTestnet, arbitrumSepolia } from 'viem/chains'
+import { bscTestnet, bsc, arbitrumSepolia } from 'viem/chains'
 
 /**
  * List of supported chains for the solver that have modified RPC URLs or are defined in the project
@@ -17,11 +17,16 @@ const configureChainRpc = (chain: Chain): Chain => {
       'https://bnb-testnet.g.alchemy.com/v2/Pck8yx8R7BLJ6MqbVD34L',
     ]
   }
+  if (modifiedChain.id === 56) {
+    modifiedChain.rpcUrls.default.http = [
+      'https://bnb-mainnet.g.alchemy.com/v2/Pck8yx8R7BLJ6MqbVD34L',
+    ]
+  }
 
   return modifiedChain
 }
 
 // Apply the configuration to all Caldera chains
-const calderaChains = [bscTestnet, arbitrumSepolia, ...TESTNET_ROLLUPS].map(configureChainRpc)
+const calderaChains = [bscTestnet, arbitrumSepolia, bsc, ...TESTNET_ROLLUPS].map(configureChainRpc)
 
 export const ChainsSupported: Chain[] = [...(EcoRoutesChains as Chain[]), ...calderaChains]
