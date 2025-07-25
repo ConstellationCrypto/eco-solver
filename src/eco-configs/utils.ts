@@ -30,11 +30,12 @@ export function getNodeEnv(): NodeEnv {
  * @returns true if the node env is preproduction or development
  */
 export function isPreEnv(): boolean {
-  return (
-    getNodeEnv() === NodeEnv.preproduction ||
-    getNodeEnv() === NodeEnv.development ||
-    getNodeEnv() === NodeEnv.staging
-  )
+  return false
+  // return (
+  //   getNodeEnv() === NodeEnv.preproduction ||
+  //   getNodeEnv() === NodeEnv.development ||
+  //   getNodeEnv() === NodeEnv.staging
+  // )
 }
 
 /**
@@ -45,9 +46,30 @@ export function isPreEnv(): boolean {
  */
 export function getChainConfig(chainID: number | string): EcoChainConfig {
   const id = isPreEnv() ? `${chainID}-${ChainPrefix}` : chainID.toString()
-  const config = EcoProtocolAddresses[id]
-  if (config === undefined) {
-    throw EcoError.ChainConfigNotFound(id)
+  return getCalderaChainConfig()
+  // const config = EcoProtocolAddresses[id]
+  // if (config === undefined) {
+  //   throw EcoError.ChainConfigNotFound(id)
+  // } else {
+  //   return CALDERA_CHAIN_CONFIG
+  // }
+}
+
+function getCalderaChainConfig(): EcoChainConfig {
+  const env = getNodeEnv()
+  if (env === NodeEnv.production) {
+    return {
+      IntentSource: '0x2020ae689ED3e017450280CEA110d0ef6E640Da4',
+      Inbox: '0x04c816032A076dF65b411Bb3F31c8d569d411ee2',
+      HyperProver: '0x0000000000000000000000000000000000000000',
+      MetaProver: '0x52Adfe10d29352DbFb4bEA76B275B957585Ba07c',
+    }
+  } else {
+    return {
+      IntentSource: '0x17683C781adb1CD185B08041dA61b02a2DF65538',
+      Inbox: '0xE02A17467Df7b1950C8849dA226844e5d3Db781a',
+      HyperProver: '0x0000000000000000000000000000000000000000',
+      MetaProver: '0xb130cd8e1cb3DA9f8BC583e2A7Bb603c11b61d5A',
+    }
   }
-  return config
 }

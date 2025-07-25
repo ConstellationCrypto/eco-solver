@@ -1,16 +1,16 @@
 export default {
   aws: [
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-secrets-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-secrets-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-configs-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-configs-prod-test',
     },
     {
-      region: 'us-east-2',
-      secretID: 'eco-solver-whitelist-dev',
+      region: 'us-west-2',
+      secretID: 'eco-solver-whitelist-prod-test',
     },
   ],
   cache: {
@@ -89,35 +89,6 @@ export default {
 
   gaslessIntentdAppIDs: ['token-pair-validation', 'matrix-test', 'test', 'sdk-demo'],
 
-  intentConfigs: {
-    defaultFee: {
-      limit: {
-        tokenBase6: 1000n * 10n ** 6n,
-        nativeBase18: 1000n * 10n ** 18n,
-      },
-      algorithm: 'linear',
-      constants: {
-        token: {
-          baseFee: 20_000n,
-          tranche: {
-            unitFee: 15_000n,
-            unitSize: 100_000_000n,
-          },
-        },
-        native: {
-          baseFee: 1_000n,
-          tranche: {
-            unitFee: 500n, // 500 wei
-            unitSize: 1n * 10n ** 18n, // 1 ETH
-          },
-        },
-      },
-    },
-    proofs: {
-      hyperlane_duration_seconds: 3600,
-      metalayer_duration_seconds: 7200,
-    },
-  },
   whitelist: {},
 
   fulfillmentEstimate: {
@@ -136,9 +107,6 @@ export default {
     defaultGasPriceGwei: '30',
   },
 
-  indexer: {
-    url: 'https://indexer.eco.com',
-  },
   withdraws: {
     chunkSize: 20,
     intervalDuration: 360_000,
@@ -195,9 +163,12 @@ export default {
     useHyperlaneDefaultHook: false,
   },
 
+  warpRoutes: {},
+  safe: {},
+
   externalAPIs: {},
   logger: {
-    usePino: true,
+    usePino: false,
     pinoConfig: {
       pinoHttp: {
         level: 'debug',
